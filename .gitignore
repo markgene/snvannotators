@@ -1,0 +1,4 @@
+*.pyc
+/build/
+/dist/
+/snvannotators.egg-info/
