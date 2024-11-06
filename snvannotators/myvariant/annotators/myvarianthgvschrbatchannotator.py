@@ -4,7 +4,7 @@ from collections.abc import Iterator
 
 import myvariant
 
-from ..myvariantannotation import MyvariantAnnotation
+from ..annotation import MyvariantAnnotation
 
 
 class MyvariantHgvsChrBatchAnnotator:

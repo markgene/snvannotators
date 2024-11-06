@@ -1,7 +1,7 @@
 """Annotator."""
 
 import myvariant
-from ..myvariantannotation import MyvariantAnnotation
+from ..annotation import MyvariantAnnotation
 
 
 class MyvariantHgvsChrAnnotator:

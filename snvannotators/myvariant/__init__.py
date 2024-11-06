@@ -1,1 +1,1 @@
-"""Using MyVariant."""
+"""A wrapper of MyVariant."""

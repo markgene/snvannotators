@@ -3,7 +3,7 @@
 import unittest
 
 from snvannotators.myvariant.annotators import MyvariantHgvsChrBatchAnnotator
-from snvannotators.myvariant.myvariantannotation import MyvariantAnnotation
+from snvannotators.myvariant.annotation import MyvariantAnnotation
 
 
 class MyvariantHgvsChrBatchAnnotatorTestCase(unittest.TestCase):

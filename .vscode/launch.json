@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pyoncokb"
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "tests all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest"
+        },
+        {
+            "name": "tests.myvariant",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "tests.myvariant"
+            ],
+        },
+        {
+            "name": "tests.myvariant.annotators.test_myvarianthgvschrbatchannotator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "tests.myvariant.annotators.test_myvarianthgvschrbatchannotator"
+            ],
+        }
+    ]
+}

@@ -2,8 +2,8 @@
 
 import unittest
 
-from snvannotator.myvariant.annotators import MyvariantHgvsChrAnnotator
-from snvannotator.myvariant.annotation import MyvariantAnnotation
+from snvannotators.myvariant.annotators import MyvariantHgvsChrAnnotator
+from snvannotators.myvariant.annotation import MyvariantAnnotation
 
 
 class MyvariantHgvsChrAnnotatorBrafV600eC1799TaTestCase(unittest.TestCase):
