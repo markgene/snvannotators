@@ -40,3 +40,10 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
 
     def test_is_deletion_insertionn(self):
         self.assertFalse(self.hgvs_g.is_deletion_insertion())
+        
+    def test_get_relevant_transcripts_flanking(self):
+        tx_acs = self.hgvs_g.get_relevant_transcripts_flanking(alt_aln_method="splign", upstream=1500, downstream=1500)
+        self.assertEqual(
+            tx_acs,
+            [['NR_149162.1', 'NC_000005.9', -1, 'splign', 1253281, 1295162], ['NM_001193376.3', 'NC_000005.9', -1, 'splign', 1253281, 1295183], ['NR_149162.2', 'NC_000005.9', -1, 'splign', 1253262, 1295183], ['NR_149163.2', 'NC_000005.9', -1, 'splign', 1253262, 1295183], ['NR_149163.3', 'NC_000005.9', -1, 'splign', 1253281, 1295183], ['NR_149162.3', 'NC_000005.9', -1, 'splign', 1253281, 1295183], ['NM_198253.3', 'NC_000005.9', -1, 'splign', 1253281, 1295183], ['NM_001193376.2', 'NC_000005.9', -1, 'splign', 1253262, 1295183], ['NM_198253.2', 'NC_000005.9', -1, 'splign', 1253281, 1295162], ['NR_149163.1', 'NC_000005.9', -1, 'splign', 1253281, 1295162], ['NM_001193376.1', 'NC_000005.9', -1, 'splign', 1253281, 1295162]]
+        )

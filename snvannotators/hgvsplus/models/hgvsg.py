@@ -6,47 +6,6 @@ from hgvs.easy import hdp, am37
 from hgvs.sequencevariant import SequenceVariant
 
 
-def get_relevant_transcripts_flanking(
-    sequence_variant_g: SequenceVariant,
-    alt_aln_method: str = "splign",
-    upstream: int = 1500,
-    downstream: int = 1500,
-) -> list[DictRow]:
-    """Get relevant transcripts taking account of flanking region.
-
-    Shift the location by upstream and downstream bases and check
-    what the relevant transcripts for the two locations, and then
-    get the unique transcript accession(s).
-    """
-    start_base = sequence_variant_g.posedit.pos.start.base
-    end_base = sequence_variant_g.posedit.pos.end.base
-    txs_sueu = hdp.get_tx_for_region(
-        sequence_variant_g.ac,
-        alt_aln_method,
-        start_base - upstream,
-        end_base - upstream,
-    )
-    txs_sded = hdp.get_tx_for_region(
-        sequence_variant_g.ac,
-        alt_aln_method,
-        start_base + downstream,
-        end_base + downstream,
-    )
-    seen = set()
-    result = []
-    for tx in txs_sueu:
-        tx_tupled = tuple(tx)
-        if tx_tupled not in seen:
-            result.append(tx)
-            seen.add(tx_tupled)
-    for tx in txs_sded:
-        tx_tupled = tuple(tx)
-        if tx_tupled not in seen:
-            result.append(tx)
-            seen.add(tx_tupled)
-    return result
-
-
 class HgvsG(SequenceVariant):
     """Extend SequenceVariant class of g type."""
 
@@ -113,6 +72,46 @@ class HgvsG(SequenceVariant):
             if txs:
                 return [tx["tx_ac"] for tx in txs]
         return []
+
+    def get_relevant_transcripts_flanking(
+        self,
+        alt_aln_method: str = "splign",
+        upstream: int = 1500,
+        downstream: int = 1500,
+    ) -> list[DictRow]:
+        """Get relevant transcripts taking account of flanking region.
+
+        Shift the location by upstream and downstream bases and check
+        what the relevant transcripts for the two locations, and then
+        get the unique transcript accession(s).
+        """
+        start_base = self.posedit.pos.start.base
+        end_base = self.posedit.pos.end.base
+        txs_sueu = hdp.get_tx_for_region(
+            self.ac,
+            alt_aln_method,
+            start_base - upstream,
+            end_base - upstream,
+        )
+        txs_sded = hdp.get_tx_for_region(
+            self.ac,
+            alt_aln_method,
+            start_base + downstream,
+            end_base + downstream,
+        )
+        seen = set()
+        result = []
+        for tx in txs_sueu:
+            tx_tupled = tuple(tx)
+            if tx_tupled not in seen:
+                result.append(tx)
+                seen.add(tx_tupled)
+        for tx in txs_sded:
+            tx_tupled = tuple(tx)
+            if tx_tupled not in seen:
+                result.append(tx)
+                seen.add(tx_tupled)
+        return result
 
     def get_relevant_transcripts_heuristic(
         self,
