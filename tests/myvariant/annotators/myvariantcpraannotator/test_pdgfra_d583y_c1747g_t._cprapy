@@ -1,19 +1,21 @@
-"""Test MyvariantHgvsChrAnnotator class with PDGFRA D583Y, c.1747G>T, chr4:g.55141101G>T."""
+"""Test MyvariantCpraAnnotator class with PDGFRA D583Y, c.1747G>T, chr4:g.55141101G>T."""
 
 import unittest
 
-from snvannotators.myvariant.annotators import MyvariantHgvsChrAnnotator
+from snvmodels.cpra import Cpra
+
+from snvannotators.myvariant.annotators import MyvariantCpraAnnotator
 from snvannotators.myvariant.annotation import MyvariantAnnotation
 
 
-class MyvariantHgvsChrAnnotatorPdgfraD583yC1747GtTestCase(unittest.TestCase):
-    """Test MyvariantHgvsChrAnnotator class with PDGFRA D583Y, c.1747G>T, chr4:g.55141101G>T."""
+class MyvariantCpraAnnotatorPdgfraD583yC1747GtTestCase(unittest.TestCase):
+    """Test MyvariantCpraAnnotator class with PDGFRA D583Y, c.1747G>T, chr4:g.55141101G>T."""
 
     @classmethod
     def setUpClass(cls):
-        annotator = MyvariantHgvsChrAnnotator()
-        hgvs_chr = "chr4:g.55141101G>T"
-        myvariant_annotation = annotator.annotate(hgvs_chr=hgvs_chr)
+        annotator = MyvariantCpraAnnotator()
+        cpra = Cpra(chrom="chr4", pos=55141101, ref="G", alt="T")
+        myvariant_annotation = annotator.annotate(cpra=cpra)
         cls.annotator = annotator
         cls.myvariant_annotation = myvariant_annotation
 
