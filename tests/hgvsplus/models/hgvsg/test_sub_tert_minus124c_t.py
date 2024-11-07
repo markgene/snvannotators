@@ -3,6 +3,7 @@
 import unittest
 
 from hgvs.easy import parse
+from hgvs.sequencevariant import SequenceVariant
 
 from snvannotators.hgvsplus.models import HgvsG
 
@@ -22,6 +23,13 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
         sequence_variant_g = parse("NC_000005.9:g.1295228G>A")
         hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g)
         self.assertTrue(isinstance(hgvs_g, HgvsG))
+        
+    def test_to_sequence_variant_g(self):
+        sequence_variant_g = self.hgvs_g.to_sequence_variant_g()
+        self.assertTrue(isinstance(sequence_variant_g, SequenceVariant))
+        self.assertEqual(sequence_variant_g.ac, "NC_000005.9")
+        self.assertEqual(sequence_variant_g.type, "g")
+        self.assertEqual(str(sequence_variant_g.posedit), "1295228G>A")
 
     def test_is_substitution(self):
         self.assertTrue(self.hgvs_g.is_substitution())

@@ -32,6 +32,12 @@ class HgvsG(SequenceVariant):
             posedit=sequence_variant_g.posedit,
         )
 
+    def to_sequence_variant_g(self) -> SequenceVariant:
+        sequence_variant_g = SequenceVariant(
+            ac=self.ac, type=self.type, posedit=self.posedit
+        )
+        return sequence_variant_g
+
     def is_substitution(self) -> bool:
         """Is substitution?"""
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["substitution"]
