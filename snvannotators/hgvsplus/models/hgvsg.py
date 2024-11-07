@@ -1,9 +1,13 @@
 """Extend SequenceVariant class of g type."""
 
+import logging
+
 from psycopg2.extras import DictRow
 
 from hgvs.easy import hdp, am37, am38
 from hgvs.sequencevariant import SequenceVariant
+
+logger = logging.getLogger(__name__)
 
 
 class HgvsG(SequenceVariant):
@@ -153,31 +157,32 @@ class HgvsG(SequenceVariant):
         self, tx_ac: str, tss_upstream_limit: int, alt_aln_method: str = "splign"
     ) -> bool:
         """Locate within promoter region or not?"""
-        g = self.sequence_variant_g
-        tx_exons = hdp.get_tx_exons(tx_ac, g.ac, alt_aln_method)
-        start = g.posedit.pos.start.base
-        end = g.posedit.pos.end.base
+        tx_exons = hdp.get_tx_exons(tx_ac, self.ac, alt_aln_method)
+        start_pos = self.posedit.pos.start.base
+        end_pos = self.posedit.pos.end.base
         strand = tx_exons[0]["alt_strand"]
         if strand == 1:
+            logger.debug("check on positive strand")
             tss = min([tx["alt_start_i"] for tx in tx_exons])
             upstream_limit = tss - tss_upstream_limit
             if (
-                start >= upstream_limit
-                and end >= upstream_limit
-                and start < tss
-                and end < tss
+                start_pos >= upstream_limit
+                and end_pos >= upstream_limit
+                and start_pos < tss
+                and end_pos < tss
             ):
                 return True
             else:
                 return False
         elif strand == -1:
+            logger.debug("check on negative strand")
             tss = max([tx["alt_end_i"] for tx in tx_exons])
             upstream_limit = tss + tss_upstream_limit
             if (
-                start <= upstream_limit
-                and end <= upstream_limit
-                and start > tss
-                and end > tss
+                start_pos <= upstream_limit
+                and end_pos <= upstream_limit
+                and start_pos > tss
+                and end_pos > tss
             ):
                 return True
             else:

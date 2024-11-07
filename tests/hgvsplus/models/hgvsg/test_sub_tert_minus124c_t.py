@@ -117,3 +117,10 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
                 "NR_149163.3",
             ],
         )
+
+    def test_is_within_promoter_region(self):
+        self.assertTrue(
+            self.hgvs_g.is_within_promoter_region(
+                tx_ac="NM_001193376.1", tss_upstream_limit=500, alt_aln_method="splign"
+            )
+        )
