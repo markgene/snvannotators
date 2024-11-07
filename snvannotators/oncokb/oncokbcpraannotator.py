@@ -12,8 +12,7 @@ from snvmodels.cpra.formatters import CpraOncokbGenomicChangeFormatter
 class OncokbCpraAnnotator:
     """Annotate Cpra with OncoKB."""
 
-    def __init__(self, cpra: Cpra, oncokb_api: OncokbApi):
-        self.cpra = cpra
+    def __init__(self, oncokb_api: OncokbApi):
         self.oncokb_api = oncokb_api
 
     def annotate(self, cpra: Cpra, ref_genome: str) -> Optional[IndicatorQueryResp]:
@@ -25,7 +24,7 @@ class OncokbCpraAnnotator:
         self.check_ref_genome(ref_genome)
         genomic_change = CpraOncokbGenomicChangeFormatter().format(cpra=cpra)
         annotator = GenomicChangeAnnotator(
-            self.oncokb_api, genomic_change=genomic_change, ref_genome=self.ref_genome
+            self.oncokb_api, genomic_change=genomic_change, ref_genome=ref_genome
         )
         indicator_query_resp = annotator.annotate()
         return indicator_query_resp

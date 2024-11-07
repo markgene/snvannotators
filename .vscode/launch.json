@@ -8,7 +8,7 @@
             "name": "Python Debugger: Module",
             "type": "debugpy",
             "request": "launch",
-            "module": "pyoncokb"
+            "module": "snvannotators"
         },
         {
             "name": "Python Debugger: Current File",
@@ -41,6 +41,17 @@
             "module": "unittest",
             "args": [
                 "tests.myvariant.annotators.test_myvarianthgvschrbatchannotator"
+            ],
+        },
+        {
+            "name": "tests.oncokb",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.oncokb"
             ],
         }
     ]
