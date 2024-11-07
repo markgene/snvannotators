@@ -24,5 +24,6 @@ setup(
         'pyoncokb',                   # Add your dependencies here
         'snvmodels',
         'myvariant',
+        'hgvs',
     ],
 )
