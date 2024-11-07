@@ -2,7 +2,7 @@
 
 from psycopg2.extras import DictRow
 
-from hgvs.easy import hdp, am37
+from hgvs.easy import hdp, am37, am38
 from hgvs.sequencevariant import SequenceVariant
 
 
@@ -64,16 +64,16 @@ class HgvsG(SequenceVariant):
 
     def get_relevant_transcripts(
         self,
-        flanking_start=500,
-        flanking_end=20000,
-        flanking_step=1000,
+        flanking_start: int = 500,
+        flanking_end: int = 20000,
+        flanking_step: int = 1000,
         alt_aln_method: str = "splign",
     ) -> list[str]:
         """Get relevant transcripts taking account of flanking regions."""
         g = self.sequence_variant_g
         for bp in range(flanking_start, flanking_end, flanking_step):
-            txs = get_relevant_transcripts_flanking(
-                g, alt_aln_method=alt_aln_method, upstream=bp, downstream=bp
+            txs = self.get_relevant_transcripts_flanking(
+                alt_aln_method=alt_aln_method, upstream=bp, downstream=bp
             )
             if txs:
                 return [tx["tx_ac"] for tx in txs]
@@ -121,9 +121,9 @@ class HgvsG(SequenceVariant):
 
     def get_relevant_transcripts_heuristic(
         self,
-        flanking_start=500,
-        flanking_end=20000,
-        flanking_step=1000,
+        flanking_start: int = 500,
+        flanking_end: int = 20000,
+        flanking_step: int = 1000,
         alt_aln_method: str = "splign",
     ) -> list[str]:
         """Get relevant transcripts in a heuristic manner.
@@ -131,14 +131,20 @@ class HgvsG(SequenceVariant):
         If the transcripts exists without taking account of flanking regions, return them.
         Otherwise, search the transcripts in a stepwise manner.
         """
-        g = self.sequence_variant_g
-        tx_acs = am37.relevant_transcripts(g)
+        ac = self.ac
+        sequence_variant_g = self.to_sequence_variant_g()
+        if ac in am37._assembly_map:
+            tx_acs = am37.relevant_transcripts(sequence_variant_g)
+        elif ac in am38._assembly_map:
+            tx_acs = am38.relevant_transcripts(sequence_variant_g)
+        else:
+            raise RuntimeError(f"fail to find {ac} in GRCh37 and GRCh38")
         if tx_acs:
             return tx_acs
         else:
             for bp in range(flanking_start, flanking_end, flanking_step):
-                txs = get_relevant_transcripts_flanking(
-                    g, alt_aln_method=alt_aln_method, upstream=bp, downstream=bp
+                txs = self.get_relevant_transcripts_flanking(
+                    alt_aln_method=alt_aln_method, upstream=bp, downstream=bp
                 )
                 if txs:
                     return [tx["tx_ac"] for tx in txs]
