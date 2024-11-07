@@ -24,6 +24,17 @@
             "module": "unittest"
         },
         {
+            "name": "tests.hgvsplus",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus"
+            ],
+        },
+        {
             "name": "tests.myvariant",
             "type": "debugpy",
             "request": "launch",
