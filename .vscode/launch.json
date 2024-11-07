@@ -35,6 +35,28 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.models",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.models"
+            ],
+        },
+        {
+            "name": "tests.hgvsplus.models.hgvsg",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.models.hgvsg"
+            ],
+        },
+        {
             "name": "tests.myvariant",
             "type": "debugpy",
             "request": "launch",
