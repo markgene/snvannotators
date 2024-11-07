@@ -61,6 +61,7 @@ class HgvsG(SequenceVariant):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        assert self.type == "g"
 
     @classmethod
     def from_sequence_variant_g(cls, sequence_variant_g: SequenceVariant):
@@ -72,50 +73,29 @@ class HgvsG(SequenceVariant):
             posedit=sequence_variant_g.posedit,
         )
 
-    def __str__(self) -> str:
-        return str(self.sequence_variant_g)
-
     def is_substitution(self) -> bool:
         """Is substitution?"""
-        sequence_variant_g = self.sequence_variant_g
-        return (
-            sequence_variant_g.posedit.edit.type
-            == self.EDIT_TYPE_LOOKUP["substitution"]
-        )
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["substitution"]
 
     def is_deletion(self) -> bool:
         """Is deletion?"""
-        sequence_variant_g = self.sequence_variant_g
-        return sequence_variant_g.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion"]
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion"]
 
     def is_duplication(self) -> bool:
         """Is duplication?"""
-        sequence_variant_g = self.sequence_variant_g
-        return (
-            sequence_variant_g.posedit.edit.type == self.EDIT_TYPE_LOOKUP["duplication"]
-        )
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["duplication"]
 
     def is_insertion(self) -> bool:
         """Is insertion?"""
-        sequence_variant_g = self.sequence_variant_g
-        return (
-            sequence_variant_g.posedit.edit.type == self.EDIT_TYPE_LOOKUP["insertion"]
-        )
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["insertion"]
 
     def is_inversion(self) -> bool:
         """Is inversion?"""
-        sequence_variant_g = self.sequence_variant_g
-        return (
-            sequence_variant_g.posedit.edit.type == self.EDIT_TYPE_LOOKUP["inversion"]
-        )
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["inversion"]
 
     def is_deletion_insertion(self) -> bool:
         """Is deletion-insertion?"""
-        sequence_variant_g = self.sequence_variant_g
-        return (
-            sequence_variant_g.posedit.edit.type
-            == self.EDIT_TYPE_LOOKUP["deletion-insertion"]
-        )
+        return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion-insertion"]
 
     def get_relevant_transcripts(
         self,
