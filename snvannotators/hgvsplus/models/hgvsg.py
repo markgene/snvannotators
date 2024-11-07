@@ -70,7 +70,6 @@ class HgvsG(SequenceVariant):
         alt_aln_method: str = "splign",
     ) -> list[str]:
         """Get relevant transcripts taking account of flanking regions."""
-        g = self.sequence_variant_g
         for bp in range(flanking_start, flanking_end, flanking_step):
             txs = self.get_relevant_transcripts_flanking(
                 alt_aln_method=alt_aln_method, upstream=bp, downstream=bp

@@ -23,7 +23,7 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
         sequence_variant_g = parse("NC_000005.9:g.1295228G>A")
         hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g)
         self.assertTrue(isinstance(hgvs_g, HgvsG))
-        
+
     def test_to_sequence_variant_g(self):
         sequence_variant_g = self.hgvs_g.to_sequence_variant_g()
         self.assertTrue(isinstance(sequence_variant_g, SequenceVariant))
@@ -48,6 +48,30 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
 
     def test_is_deletion_insertionn(self):
         self.assertFalse(self.hgvs_g.is_deletion_insertion())
+
+    def test_get_relevant_transcripts(self):
+        tx_acs = self.hgvs_g.get_relevant_transcripts(
+            alt_aln_method="splign",
+            flanking_start=500,
+            flanking_end=20000,
+            flanking_step=1000,
+        )
+        self.assertEqual(
+            sorted(tx_acs),
+            [
+                "NM_001193376.1",
+                "NM_001193376.2",
+                "NM_001193376.3",
+                "NM_198253.2",
+                "NM_198253.3",
+                "NR_149162.1",
+                "NR_149162.2",
+                "NR_149162.3",
+                "NR_149163.1",
+                "NR_149163.2",
+                "NR_149163.3",
+            ],
+        )
 
     def test_get_relevant_transcripts_flanking(self):
         tx_acs = self.hgvs_g.get_relevant_transcripts_flanking(
