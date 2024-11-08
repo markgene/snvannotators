@@ -90,6 +90,17 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.models.hgvsp",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.models.hgvsp"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.models.hgvst",
             "type": "debugpy",
             "request": "launch",
