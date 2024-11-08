@@ -136,7 +136,7 @@ class HgvsG(SequenceVariant):
         Otherwise, search the transcripts in a stepwise manner.
         """
         sequence_variant_g = self.to_sequence_variant_g()
-        assembly_mapper = self.get_assembly_map()
+        assembly_mapper = self.get_assembly_mapper()
         tx_acs = assembly_mapper.relevant_transcripts(sequence_variant_g)
         if tx_acs:
             return tx_acs
@@ -186,7 +186,7 @@ class HgvsG(SequenceVariant):
         else:
             raise ValueError(f"strand is {strand} but expected to be 1 or -1.")
         
-    def get_assembly_map(self) -> AssemblyMapper:
+    def get_assembly_mapper(self) -> AssemblyMapper:
         if self.ac in am37._assembly_map:
             return am37
         elif self.ac in am38._assembly_map:

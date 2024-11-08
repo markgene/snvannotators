@@ -35,6 +35,28 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.mappers",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.mappers"
+            ],
+        },
+        {
+            "name": "tests.hgvsplus.mappers.hgvsgtotmapper",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.mappers.hgvsgtotmapper"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.models",
             "type": "debugpy",
             "request": "launch",
