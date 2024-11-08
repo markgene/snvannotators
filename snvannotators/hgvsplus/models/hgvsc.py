@@ -31,11 +31,12 @@ class HgvsC(SequenceVariant):
             ac=sequence_variant_c.ac,
             type=sequence_variant_c.type,
             posedit=sequence_variant_c.posedit,
+            gene=sequence_variant_c.gene,
         )
 
     def to_sequence_variant_c(self) -> SequenceVariant:
         sequence_variant_c = SequenceVariant(
-            ac=self.ac, type=self.type, posedit=self.posedit
+            ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_c
 

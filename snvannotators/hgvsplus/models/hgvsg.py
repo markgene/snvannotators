@@ -35,11 +35,12 @@ class HgvsG(SequenceVariant):
             ac=sequence_variant_g.ac,
             type=sequence_variant_g.type,
             posedit=sequence_variant_g.posedit,
+            gene=sequence_variant_g.gene,
         )
 
     def to_sequence_variant_g(self) -> SequenceVariant:
         sequence_variant_g = SequenceVariant(
-            ac=self.ac, type=self.type, posedit=self.posedit
+            ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_g
 
@@ -185,7 +186,7 @@ class HgvsG(SequenceVariant):
                 return False
         else:
             raise ValueError(f"strand is {strand} but expected to be 1 or -1.")
-        
+
     def get_assembly_mapper(self) -> AssemblyMapper:
         if self.ac in am37._assembly_map:
             return am37
