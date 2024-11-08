@@ -46,6 +46,17 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.models.hgvsc",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.models.hgvsc"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.models.hgvsg",
             "type": "debugpy",
             "request": "launch",
@@ -54,6 +65,17 @@
                 "discover",
                 // "-v",
                 "tests.hgvsplus.models.hgvsg"
+            ],
+        },
+        {
+            "name": "tests.hgvsplus.models.hgvst",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.models.hgvst"
             ],
         },
         {
