@@ -1,5 +1,7 @@
 """Create :class:`hgvs.sequencevariant.SequenceVariant` of type g."""
 
+from typing import Optional
+
 import hgvs
 import hgvs.edit
 import hgvs.location
@@ -23,7 +25,13 @@ class SequenceVariantGCreator:
         return cls.instance
 
     def create(
-        self, ac: str, start_pos: int, end_pos: int, ref: str, alt: str
+        self,
+        ac: str,
+        start_pos: int,
+        end_pos: int,
+        ref: str,
+        alt: str,
+        gene: Optional[str] = None,
     ) -> hgvs.sequencevariant.SequenceVariant:
         """Get a SequenceVariant object of genomic DNA.
 
@@ -38,7 +46,7 @@ class SequenceVariantGCreator:
             start_pos=start_pos, end_pos=end_pos, ref=ref, alt=alt
         )
         sequence_variant_g = hgvs.sequencevariant.SequenceVariant(
-            ac=ac, type="g", posedit=posedit
+            ac=ac, type="g", posedit=posedit, gene=gene
         )
         return sequence_variant_g
 
