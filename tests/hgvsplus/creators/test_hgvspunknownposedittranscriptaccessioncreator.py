@@ -16,4 +16,4 @@ class HgvsPUnknownPosEditTranscriptAccessionCreatorTestCase(unittest.TestCase):
             tx_ac="NM_198253.2"
         ).create()
         self.assertTrue(isinstance(hgvs_p, HgvsP))
-        self.assertEqual(str(hgvs_p), "NP_937983.2:p.?")
+        self.assertEqual(str(hgvs_p), "NP_937983.2(TERT):p.?")
