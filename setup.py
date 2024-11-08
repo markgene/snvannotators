@@ -23,6 +23,7 @@ setup(
     install_requires=[                # List of dependencies
         'pyoncokb',                   # Add your dependencies here
         'snvmodels',
+        'transcriptfeatures',
         'myvariant',
         'hgvs',
     ],

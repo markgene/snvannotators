@@ -4,6 +4,7 @@ import logging
 
 from psycopg2.extras import DictRow
 
+from hgvs.assemblymapper import AssemblyMapper
 from hgvs.easy import hdp, am37, am38
 from hgvs.sequencevariant import SequenceVariant
 
@@ -134,14 +135,9 @@ class HgvsG(SequenceVariant):
         If the transcripts exists without taking account of flanking regions, return them.
         Otherwise, search the transcripts in a stepwise manner.
         """
-        ac = self.ac
         sequence_variant_g = self.to_sequence_variant_g()
-        if ac in am37._assembly_map:
-            tx_acs = am37.relevant_transcripts(sequence_variant_g)
-        elif ac in am38._assembly_map:
-            tx_acs = am38.relevant_transcripts(sequence_variant_g)
-        else:
-            raise RuntimeError(f"fail to find {ac} in GRCh37 and GRCh38")
+        assembly_mapper = self.get_assembly_map()
+        tx_acs = assembly_mapper.relevant_transcripts(sequence_variant_g)
         if tx_acs:
             return tx_acs
         else:
@@ -189,3 +185,11 @@ class HgvsG(SequenceVariant):
                 return False
         else:
             raise ValueError(f"strand is {strand} but expected to be 1 or -1.")
+        
+    def get_assembly_map(self) -> AssemblyMapper:
+        if self.ac in am37._assembly_map:
+            return am37
+        elif self.ac in am38._assembly_map:
+            return am38
+        else:
+            raise RuntimeError(f"fail to find {self.ac} in GRCh37 and GRCh38")
