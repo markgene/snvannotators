@@ -129,7 +129,6 @@ class HgvsP(SequenceVariant):
             return False
 
     def is_nonsense(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_substitution():
@@ -138,13 +137,11 @@ class HgvsP(SequenceVariant):
             return False
 
     def is_synonymous(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["synonymous"]
 
     def is_no_protein(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         p_edit = self.posedit.edit
@@ -153,7 +150,6 @@ class HgvsP(SequenceVariant):
         return False
 
     def is_substitution_in_translation_initiation_codon(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_substitution():
@@ -163,7 +159,6 @@ class HgvsP(SequenceVariant):
         return False
 
     def is_extension(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -171,7 +166,6 @@ class HgvsP(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["extension"]
 
     def is_n_terminal_extension(self) -> bool:
-        """Is N-terminal extension?"""
         if self.is_extension():
             p_pe_str = self.posedit.format()
             if p_pe_str.startswith("Met1ext"):
@@ -179,7 +173,6 @@ class HgvsP(SequenceVariant):
         return False
 
     def is_c_terminal_extension(self) -> bool:
-        """Is C-terminal extension?"""
         if self.is_extension():
             p_pe_str = self.posedit.format()
             if p_pe_str.startswith("Ter"):
@@ -187,7 +180,6 @@ class HgvsP(SequenceVariant):
         return False
 
     def is_frameshift(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -213,7 +205,6 @@ class HgvsP(SequenceVariant):
             return True
 
     def is_deletion(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -221,7 +212,6 @@ class HgvsP(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion"]
 
     def is_duplication(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -229,7 +219,6 @@ class HgvsP(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["duplication"]
 
     def is_insertion(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -237,7 +226,6 @@ class HgvsP(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["insertion"]
 
     def is_stop_gain_insertion(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         p_edit = self.posedit.edit
@@ -247,7 +235,6 @@ class HgvsP(SequenceVariant):
         return False
 
     def is_deletion_insertion(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         if self.is_no_protein():
@@ -255,7 +242,6 @@ class HgvsP(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion-insertion"]
 
     def is_stop_gain_deletion_insertion(self) -> bool:
-        """if protein impact unknown?"""
         if self.is_protein_impact_unknown():
             return False
         p_edit = self.posedit.edit
@@ -287,7 +273,7 @@ class HgvsP(SequenceVariant):
         return self.UNKNOWN_PROTEIN_CHANGE_1
 
     def is_protein_impact_unknown(self) -> bool:
-        """if protein impact unknown?"""
+        """Is protein impact unknown?"""
         if self.posedit is None:
             return True
         return False
