@@ -50,12 +50,16 @@ class HgvsP(SequenceVariant):
         super().__init__(*args, **kwargs)
         self.error_ok = error_ok
         assert self.type == "p"
+        self.is_valid()
 
     @classmethod
-    def from_sequence_variant_p(cls, sequence_variant_p: SequenceVariant):
+    def from_sequence_variant_p(
+        cls, sequence_variant_p: SequenceVariant, error_ok: bool = True
+    ):
         assert isinstance(sequence_variant_p, SequenceVariant)
         assert sequence_variant_p.type == "p"
         return cls(
+            error_ok=error_ok,
             ac=sequence_variant_p.ac,
             type=sequence_variant_p.type,
             posedit=sequence_variant_p.posedit,
@@ -69,11 +73,22 @@ class HgvsP(SequenceVariant):
         return sequence_variant_p
 
     def is_valid(self) -> bool:
+        """Is valid?
+        
+        There is a bug in hgvs package. However, the authors do not take 
+        any action to fix it. It is a slot and I cannot directly add ref_n 
+        attribute when it is missing. 
+        See the [issue](https://github.com/biocommons/hgvs/issues/727) and 
+        my patch [commit](https://github.com/biocommons/hgvs/commit/16682e80945dba04ce90b5fa814a3ef8527f073f).
+
+        :return: True if valid.
+        :rtype: bool
+        """
         sequence_variant_p = self.to_sequence_variant_p()
         if self.posedit is None:
             logger.warning("invalid as posedit attribute is None")
             return False
-        elif isinstance(self.posedit, PosEdit): 
+        elif isinstance(self.posedit, PosEdit):
             try:
                 is_valid = validate(sequence_variant_p)
             except HGVSInvalidVariantError:
@@ -82,6 +97,14 @@ class HgvsP(SequenceVariant):
                 else:
                     raise
                 is_valid = False
+            except AttributeError as err:
+                if str(err) == "'AARefAlt' object has no attribute 'ref_n'":
+                    logger.warning(
+                        "%s.\nhgvs package exception, not fixable because authors take no action and it is impossible to fix from my side by providing a value to ref_n as slot is used.",
+                        err,
+                    )
+                else:
+                    raise
             else:
                 return is_valid
         else:

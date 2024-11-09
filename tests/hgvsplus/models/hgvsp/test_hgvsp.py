@@ -43,7 +43,7 @@ class HgvsPTestCase(unittest.TestCase):
         )
 
     def test_is_no_protein(self):
-        hgvs_p = HgvsP.from_sequence_variant_p(parse("LRG_199p1:p.0"))
+        hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.0"))
         self.assertTrue(hgvs_p.is_no_protein())
         self.assertEqual(
             hgvs_p.get_mutation_type_of_protein_impact(),
@@ -51,7 +51,7 @@ class HgvsPTestCase(unittest.TestCase):
         )
 
     def test_is_substitution_in_translation_initiation_codon(self):
-        hgvs_p = HgvsP.from_sequence_variant_p(parse("LRG_199p1:p.Met1?"))
+        hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.Met1?"))
         self.assertTrue(
             hgvs_p.is_substitution_in_translation_initiation_codon(),
         )
@@ -123,7 +123,7 @@ class HgvsPTestCase(unittest.TestCase):
         )
 
     def test_get_mutation_type_of_protein_impact(self):
-        hgvs_p = HgvsP.from_sequence_variant_p(parse("LRG_199p1:p.(Met1?)"))
+        hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.(Met1?)"))
         self.assertEqual(
             hgvs_p.get_mutation_type_of_protein_impact(),
             HgvsP.MUTATION_TERM_LOOKUP["translation initiation codon: unknown"],
