@@ -103,6 +103,7 @@ class HgvsP(SequenceVariant):
                         "%s.\nhgvs package exception, not fixable because authors take no action and it is impossible to fix from my side by providing a value to ref_n as slot is used.",
                         err,
                     )
+                    is_valid = True
                 else:
                     raise
             else:
