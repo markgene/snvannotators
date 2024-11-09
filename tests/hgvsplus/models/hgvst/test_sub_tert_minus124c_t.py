@@ -18,6 +18,11 @@ class HgvsTSubTertMinus124CTTestCase(unittest.TestCase):
         cls.hgvs_t = HgvsT.from_sequence_variant_t(
             sequence_variant_t=sequence_variant_t
         )
+        
+    def test_is_valid(self):
+        sequence_variant_t = parse("NM_198253.2(TERT):c.-124C>T")
+        hgvs_t = HgvsT.from_sequence_variant_t(sequence_variant_t=sequence_variant_t)
+        self.assertTrue(hgvs_t.is_valid())
 
     def test_from_sequence_variant_t(self):
         sequence_variant_t = parse("NM_198253.2(TERT):c.-124C>T")

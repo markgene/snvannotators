@@ -2,6 +2,8 @@
 
 import logging
 
+from hgvs.easy import validate
+from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.sequencevariant import SequenceVariant
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,7 @@ class HgvsT(SequenceVariant):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         assert self.type in ["c", "n"]
+        self.is_valid()
 
     @classmethod
     def from_sequence_variant_t(cls, sequence_variant_t: SequenceVariant):
@@ -39,6 +42,18 @@ class HgvsT(SequenceVariant):
             ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_t
+    
+    def is_valid(self) -> bool:
+        sequence_variant_t = self.to_sequence_variant_t()
+        try:
+            is_valid = validate(sequence_variant_t)
+        except HGVSInvalidIntervalError as err:
+            if "coordinate is out of bounds" in str(err):
+                logger.warning("%s. The error is usually seen for promoter variant, e.g. c.-124")
+                is_valid = True
+            else:
+                raise
+        return is_valid
 
     def is_substitution(self) -> bool:
         """Is substitution?"""
