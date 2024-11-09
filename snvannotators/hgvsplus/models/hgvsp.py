@@ -1,8 +1,14 @@
 """Extend SequenceVariant class of p type."""
 
 import copy
+import logging
 
+from hgvs.easy import validate
+from hgvs.exceptions import HGVSInvalidVariantError
+from hgvs.posedit import PosEdit
 from hgvs.sequencevariant import SequenceVariant
+
+logger = logging.getLogger(__name__)
 
 
 class HgvsP(SequenceVariant):
@@ -40,8 +46,9 @@ class HgvsP(SequenceVariant):
     }
     UNKNOWN_PROTEIN_CHANGE_1 = "?"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, error_ok: bool = True, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.error_ok = error_ok
         assert self.type == "p"
 
     @classmethod
@@ -60,6 +67,29 @@ class HgvsP(SequenceVariant):
             ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_p
+
+    def is_valid(self) -> bool:
+        sequence_variant_p = self.to_sequence_variant_p()
+        if self.posedit is None:
+            logger.warning("invalid as posedit attribute is None")
+            return False
+        elif isinstance(self.posedit, PosEdit): 
+            try:
+                is_valid = validate(sequence_variant_p)
+            except HGVSInvalidVariantError:
+                if self.error_ok:
+                    logger.error("fail to valid HGVS P %s", sequence_variant_p.format())
+                else:
+                    raise
+                is_valid = False
+            else:
+                return is_valid
+        else:
+            logger.warning(
+                "invalid as posedit attribute is not a PosEdit object: %s",
+                repr(self.posedit),
+            )
+            return False
 
     def get_mutation_type_of_protein_impact(self) -> str:
         """Get mutation type of impact on protein."""

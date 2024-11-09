@@ -9,6 +9,14 @@ from snvannotators.hgvsplus.models import HgvsP
 
 class HgvsPTestCase(unittest.TestCase):
     """Test HgvsP class."""
+    
+    def test_is_valid(self):
+        hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.(Trp24Cys)"))
+        self.assertTrue(hgvs_p.is_valid())
+
+    def test_is_invalid(self):
+        hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.(Tyr24Cys)"))
+        self.assertFalse(hgvs_p.is_valid())
 
     def test_is_missense(self):
         hgvs_p = HgvsP.from_sequence_variant_p(parse("NP_003997.1:p.(Trp24Cys)"))
