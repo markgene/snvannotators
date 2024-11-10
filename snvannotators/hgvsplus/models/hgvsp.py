@@ -46,20 +46,25 @@ class HgvsP(SequenceVariant):
     }
     UNKNOWN_PROTEIN_CHANGE_1 = "?"
 
-    def __init__(self, error_ok: bool = True, *args, **kwargs):
+    def __init__(self, soft_validation: bool = True, *args, **kwargs):
+        """init
+
+        :param soft_validation: only raise errors when they are not recognized, defaults to True
+        :type soft_validation: bool, optional
+        """
         super().__init__(*args, **kwargs)
-        self.error_ok = error_ok
+        self.soft_validation = soft_validation
         assert self.type == "p"
         self.is_valid()
 
     @classmethod
     def from_sequence_variant_p(
-        cls, sequence_variant_p: SequenceVariant, error_ok: bool = True
+        cls, sequence_variant_p: SequenceVariant, soft_validation: bool = True
     ):
         assert isinstance(sequence_variant_p, SequenceVariant)
         assert sequence_variant_p.type == "p"
         return cls(
-            error_ok=error_ok,
+            soft_validation=soft_validation,
             ac=sequence_variant_p.ac,
             type=sequence_variant_p.type,
             posedit=sequence_variant_p.posedit,
@@ -92,7 +97,7 @@ class HgvsP(SequenceVariant):
             try:
                 is_valid = validate(sequence_variant_p)
             except HGVSInvalidVariantError:
-                if self.error_ok:
+                if self.soft_validation:
                     logger.error("fail to valid HGVS P %s", sequence_variant_p.format())
                 else:
                     raise
