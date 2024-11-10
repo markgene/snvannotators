@@ -58,8 +58,8 @@ class HgvsC(SequenceVariant):
 
     @classmethod
     def from_hgvs_t(cls, hgvs_t: HgvsT, soft_validation: bool = True):
-        if hgvs_t.type != "c":
-            raise ValueError(f"hgvs_t.type {hgvs_t} must be of type c")
+        if not hgvs_t.is_coding():
+            raise ValueError(f"hgvs_t.type {hgvs_t} must be coding transcript")
         return cls(
             soft_validation=soft_validation,
             ac=hgvs_t.ac,

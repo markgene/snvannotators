@@ -24,7 +24,7 @@ class HgvsT(SequenceVariant):
     def __init__(self, soft_validation: bool = True, *args, **kwargs):
         """init.
 
-        :param soft_validation: only raise errors when they are not recognized, 
+        :param soft_validation: only raise errors when they are not recognized,
             defaults to True. If False, raise errors no matter they are recognized
             or not.
         :type soft_validation: bool, optional
@@ -94,3 +94,9 @@ class HgvsT(SequenceVariant):
     def is_deletion_insertion(self) -> bool:
         """Is deletion-insertion?"""
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion-insertion"]
+
+    def is_coding(self) -> bool:
+        return self.type == "c"
+
+    def is_noncoding(self) -> bool:
+        return self.type == "n"
