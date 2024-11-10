@@ -8,7 +8,7 @@ from hgvs.location import BaseOffsetInterval, BaseOffsetPosition, Datum
 from hgvs.posedit import PosEdit
 from hgvs.sequencevariant import SequenceVariant
 
-from ..models import HgvsG, HgvsT
+from snvannotators.hgvsplus.models import HgvsG, HgvsT
 
 
 class HgvsGToTMapper:

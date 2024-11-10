@@ -6,7 +6,6 @@ from psycopg2.extras import DictRow
 
 from hgvs.assemblymapper import AssemblyMapper
 from hgvs.easy import am37, am38, hdp, validate
-from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.sequencevariant import SequenceVariant
 
 logger = logging.getLogger(__name__)

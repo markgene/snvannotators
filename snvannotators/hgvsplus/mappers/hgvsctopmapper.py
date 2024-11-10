@@ -1,4 +1,4 @@
-"""Convert SequenceVariant C to P type.
+"""Convert HgvsC to HgvsP.
 
 Sometimes, the c_to_p method does not work as expected. For example, given
 "NM_005343.2:c.2T>G", it will return a SequenceVariant object with its 
