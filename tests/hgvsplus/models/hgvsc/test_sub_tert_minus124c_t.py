@@ -5,7 +5,7 @@ import unittest
 from hgvs.easy import parse
 from hgvs.sequencevariant import SequenceVariant
 
-from snvannotators.hgvsplus.models import HgvsC
+from snvannotators.hgvsplus.models import HgvsC, HgvsT
 
 
 class HgvsCSubTertMinus124CTTestCase(unittest.TestCase):
@@ -18,6 +18,15 @@ class HgvsCSubTertMinus124CTTestCase(unittest.TestCase):
         cls.hgvs_c = HgvsC.from_sequence_variant_c(
             sequence_variant_c=sequence_variant_c
         )
+
+    def test_from_hgvs_t(self):
+        sequence_variant_t = parse("NM_198253.2(TERT):c.-124C>T")
+        hgvs_t = HgvsT.from_sequence_variant_t(
+            sequence_variant_t=sequence_variant_t, soft_validation=True
+        )
+        hgvs_c = HgvsC.from_hgvs_t(hgvs_t=hgvs_t, soft_validation=True)
+        self.assertTrue(isinstance(hgvs_c, HgvsC))
+        self.assertTrue(hgvs_c.is_valid())
 
     def test_from_sequence_variant_c(self):
         sequence_variant_c = parse("NM_198253.2(TERT):c.-124C>T")

@@ -68,6 +68,17 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.mappers.hgvsgtotpmapper",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.mappers.hgvsgtotpmapper"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.models",
             "type": "debugpy",
             "request": "launch",

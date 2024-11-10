@@ -6,7 +6,7 @@ from hgvs.easy import validate
 from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.sequencevariant import SequenceVariant
 
-from snvannotators.hgvsplus.models import HgvsT
+from snvannotators.hgvsplus.models.hgvst import HgvsT
 
 logger = logging.getLogger(__name__)
 
@@ -69,9 +69,9 @@ class HgvsC(SequenceVariant):
         )
 
     def is_valid(self) -> bool:
-        sequence_variant_t = self.to_sequence_variant_t()
+        sequence_variant_c = self.to_sequence_variant_c()
         try:
-            is_valid = validate(sequence_variant_t)
+            is_valid = validate(sequence_variant_c)
         except HGVSInvalidIntervalError as err:
             if "coordinate is out of bounds" in str(err):
                 if self.soft_validation:
