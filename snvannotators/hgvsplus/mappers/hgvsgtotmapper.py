@@ -46,8 +46,19 @@ class HgvsGToTMapper:
                 raise ValueError(
                     f"{hgvs_g} does not locate within promoter region"
                 ) from err
+        if sequence_variant_t.gene is None:
+            gene = self.get_gene()
+            sequence_variant_t.gene = gene
         hgvs_t = HgvsT.from_sequence_variant_t(sequence_variant_t=sequence_variant_t)
         return hgvs_t
+
+    def get_gene(self) -> str:
+        sequence_variant_g = self.hgvs_g.to_sequence_variant_g()
+        tx_info = hdp.get_tx_info(
+            self.tx_ac, sequence_variant_g.ac, self.alt_aln_method
+        )
+        gene = tx_info["hgnc"]
+        return gene
 
     def convert_within_promoter_region(self) -> SequenceVariant:
         """Convert HgvsG within promter region to SequenceVariant of C type."""
