@@ -5,6 +5,8 @@
 3. Annotate transcript features.
 """
 
+from hgvs.easy import normalize
+
 from snvannotators.hgvsplus.mappers.hgvsgtotpmapper import HgvsGToTPMapper
 from snvannotators.hgvsplus.models import HgvsG
 
@@ -32,7 +34,7 @@ class HgvsGAnnotator:
         hgvs_g_normalized = HgvsG.from_sequence_variant_g(
             sequence_variant_g=sequence_variant_g_normalized
         )
-        hgvs_g = HgvsG(sequence_variant_g=sequence_variant_g_normalized)
+        hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g_normalized)
         transcript_accessions = hgvs_g.get_relevant_transcripts()
         hgvs_tp_annotations = []
         for tx_ac in transcript_accessions:

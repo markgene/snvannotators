@@ -35,6 +35,17 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.annotators",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.annotators"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.creators",
             "type": "debugpy",
             "request": "launch",
