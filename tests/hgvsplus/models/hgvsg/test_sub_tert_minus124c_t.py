@@ -18,6 +18,9 @@ class HgvsGSubTertMinus124CTTestCase(unittest.TestCase):
         cls.hgvs_g = HgvsG.from_sequence_variant_g(
             sequence_variant_g=sequence_variant_g
         )
+        
+    def test_is_valid(self):
+        self.assertTrue(self.hgvs_g.is_valid())
 
     def test_from_sequence_variant_g(self):
         sequence_variant_g = parse("NC_000005.9:g.1295228G>A")

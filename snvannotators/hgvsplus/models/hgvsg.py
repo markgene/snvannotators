@@ -5,7 +5,8 @@ import logging
 from psycopg2.extras import DictRow
 
 from hgvs.assemblymapper import AssemblyMapper
-from hgvs.easy import hdp, am37, am38
+from hgvs.easy import am37, am38, hdp, validate
+from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.sequencevariant import SequenceVariant
 
 logger = logging.getLogger(__name__)
@@ -23,12 +24,23 @@ class HgvsG(SequenceVariant):
         "deletion-insertion": "delins",
     }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, soft_validation: bool = True, *args, **kwargs):
+        """init.
+
+        :param soft_validation: only raise errors when they are not recognized,
+            defaults to True. If False, raise errors no matter they are recognized
+            or not.
+        :type soft_validation: bool, optional
+        """
         super().__init__(*args, **kwargs)
+        self.soft_validation = soft_validation
         assert self.type == "g"
+        self.is_valid()
 
     @classmethod
-    def from_sequence_variant_g(cls, sequence_variant_g: SequenceVariant):
+    def from_sequence_variant_g(
+        cls, sequence_variant_g: SequenceVariant, soft_validation: bool = True
+    ):
         assert isinstance(sequence_variant_g, SequenceVariant)
         assert sequence_variant_g.type == "g"
         return cls(
@@ -43,6 +55,11 @@ class HgvsG(SequenceVariant):
             ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_g
+
+    def is_valid(self) -> bool:
+        sequence_variant_g = self.to_sequence_variant_g()
+        is_valid = validate(sequence_variant_g)
+        return is_valid
 
     def is_substitution(self) -> bool:
         """Is substitution?"""

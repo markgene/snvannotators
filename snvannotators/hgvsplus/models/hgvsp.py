@@ -47,7 +47,7 @@ class HgvsP(SequenceVariant):
     UNKNOWN_PROTEIN_CHANGE_1 = "?"
 
     def __init__(self, soft_validation: bool = True, *args, **kwargs):
-        """init
+        """init.
 
         :param soft_validation: only raise errors when they are not recognized, 
             defaults to True. If False, raise errors no matter they are recognized

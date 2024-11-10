@@ -22,16 +22,26 @@ class HgvsT(SequenceVariant):
     }
 
     def __init__(self, soft_validation: bool = True, *args, **kwargs):
+        """init.
+
+        :param soft_validation: only raise errors when they are not recognized, 
+            defaults to True. If False, raise errors no matter they are recognized
+            or not.
+        :type soft_validation: bool, optional
+        """
         super().__init__(*args, **kwargs)
         self.soft_validation = soft_validation
         assert self.type in ["c", "n"]
         self.is_valid()
 
     @classmethod
-    def from_sequence_variant_t(cls, sequence_variant_t: SequenceVariant):
+    def from_sequence_variant_t(
+        cls, sequence_variant_t: SequenceVariant, soft_validation: bool = True
+    ):
         assert isinstance(sequence_variant_t, SequenceVariant)
         assert sequence_variant_t.type in ["c", "n"]
         return cls(
+            soft_validation=soft_validation,
             ac=sequence_variant_t.ac,
             type=sequence_variant_t.type,
             posedit=sequence_variant_t.posedit,
