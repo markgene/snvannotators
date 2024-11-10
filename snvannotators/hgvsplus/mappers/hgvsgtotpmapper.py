@@ -1,7 +1,7 @@
 """Convert HgvsG to HgvsT and then to HgvsP."""
 
 import logging
-from typing import Optional
+from typing import List, Union
 
 from snvannotators.hgvsplus.mappers.hgvsgtotmapper import HgvsGToTMapper
 from snvannotators.hgvsplus.mappers.hgvsctopmapper import HgvsCToPMapper
@@ -27,13 +27,13 @@ class HgvsGToTPMapper:
         self.tss_upstream_limit = tss_upstream_limit
         self.uncertain = uncertain
 
-    def map(self) -> list[Optional[HgvsT], Optional[HgvsP]]:
+    def map(self) -> List[Union[HgvsT, HgvsP, None]]:
         if self.is_noncoding(refseq_ac=self.tx_ac):
             logger.info(
                 "non-coding transcript based on RefSeq accession, beginning with NR. "
                 "TODO: support other types of accessions."
             )
-            return list[None, None]
+            return [None, None]
         hgvs_g_to_t_mapper = HgvsGToTMapper(
             hgvs_g=self.hgvs_g,
             tx_ac=self.tx_ac,

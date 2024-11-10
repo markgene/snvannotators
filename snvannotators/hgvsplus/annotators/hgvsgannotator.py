@@ -34,7 +34,9 @@ class HgvsGAnnotator:
         hgvs_g_normalized = HgvsG.from_sequence_variant_g(
             sequence_variant_g=sequence_variant_g_normalized
         )
-        hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g_normalized)
+        hgvs_g = HgvsG.from_sequence_variant_g(
+            sequence_variant_g=sequence_variant_g_normalized
+        )
         transcript_accessions = hgvs_g.get_relevant_transcripts()
         hgvs_tp_annotations = []
         for tx_ac in transcript_accessions:
@@ -46,7 +48,7 @@ class HgvsGAnnotator:
                 uncertain=self.uncertain,
             ).map()
             hgvs_tp_annotation = HgvsTPAnnotation(
-                hgvs_t=hgvs_t_p[0], hgvs_p=hgvs_t_p[1]
+                tx_ac=tx_ac, hgvs_t=hgvs_t_p[0], hgvs_p=hgvs_t_p[1]
             )
             hgvs_tp_annotations.append(hgvs_tp_annotation)
         hgvs_annotation = HgvsAnnotation(
