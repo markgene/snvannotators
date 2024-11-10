@@ -5,7 +5,7 @@ from typing import Optional
 
 from snvannotators.hgvsplus.mappers.hgvsgtotmapper import HgvsGToTMapper
 from snvannotators.hgvsplus.mappers.hgvsctopmapper import HgvsCToPMapper
-from snvannotators.hgvsplus.models import HgvsG, HgvsP, HgvsT
+from snvannotators.hgvsplus.models import HgvsC, HgvsG, HgvsP, HgvsT
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +41,9 @@ class HgvsGToTPMapper:
             tss_upstream_limit=self.tss_upstream_limit,
         )
         hgvs_t = hgvs_g_to_t_mapper.map()
-        if hgvs_t.type == "c":
-            hgvs_p = HgvsCToPMapper(hgvs_c=hgvs_t).map()
+        if hgvs_t.is_coding():
+            hgvs_c = HgvsC.from_hgvs_t(hgvs_t=hgvs_t, soft_validation=True)
+            hgvs_p = HgvsCToPMapper(hgvs_c=hgvs_c).map()
             if isinstance(hgvs_p, HgvsP) and hgvs_p.posedit:
                 hgvs_p.posedit.uncertain = self.uncertain
         else:

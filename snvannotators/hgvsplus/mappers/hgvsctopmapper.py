@@ -34,7 +34,7 @@ class HgvsCToPMapper:
 
     def __post_init__(self):
         if not isinstance(self.hgvs_c, HgvsC):
-            raise ValueError("hgvs_c must be a HgvsC")
+            raise ValueError(f"hgvs_c {self.hgvs_c} must be a HgvsC")
 
     def map(self) -> HgvsP:
         """Map SequenceVariant C to P type.
