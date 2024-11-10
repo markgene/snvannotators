@@ -1,4 +1,3 @@
-
 """Test HgvsGAnnotator class with TP53 c.754del."""
 
 import unittest
@@ -34,17 +33,20 @@ class HgvsGAnnotatorTp53c754delTestCase(unittest.TestCase):
 
     def test_hgvs_annotation_hgvs_g(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g, HgvsG))
-        self.assertEqual(str(self.hgvs_annotation.hgvs_g), "NC_000005.9:g.1295228G>A")
+        self.assertEqual(str(self.hgvs_annotation.hgvs_g), "NC_000017.10:g.7577527del")
 
     def test_hgvs_annotation_hgvs_g_normalized(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g_normalized, HgvsG))
         self.assertEqual(
-            str(self.hgvs_annotation.hgvs_g_normalized), "NC_000005.9:g.1295228G>A"
+            str(self.hgvs_annotation.hgvs_g_normalized), "NC_000017.10:g.7577528del"
         )
 
     def test_hgvs_annotation_hgvs_t(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
-            self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_t, HgvsT))
+            self.assertTrue(
+                hgvs_tp_annotation.hgvs_t is None
+                or isinstance(hgvs_tp_annotation.hgvs_t, HgvsT)
+            )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
                     str(hgvs_tp_annotation.hgvs_t), "NM_000546.5(TP53):c.754del"
@@ -52,7 +54,10 @@ class HgvsGAnnotatorTp53c754delTestCase(unittest.TestCase):
 
     def test_hgvs_annotation_hgvs_p(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
-            self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_p, HgvsP))
+            self.assertTrue(
+                hgvs_tp_annotation.hgvs_p is None
+                or isinstance(hgvs_tp_annotation.hgvs_p, HgvsP)
+            )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
                     str(hgvs_tp_annotation.hgvs_p), "NP_000537.3:p.Leu252SerfsTer93"

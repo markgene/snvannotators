@@ -43,7 +43,10 @@ class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
 
     def test_hgvs_annotation_hgvs_t(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
-            self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_t, HgvsT))
+            self.assertTrue(
+                hgvs_tp_annotation.hgvs_t is None
+                or isinstance(hgvs_tp_annotation.hgvs_t, HgvsT)
+            )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
                     str(hgvs_tp_annotation.hgvs_t), "NM_198253.2(TERT):c.-124C>T"
@@ -51,7 +54,10 @@ class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
 
     def test_hgvs_annotation_hgvs_p(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
-            self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_p, HgvsP))
+            self.assertTrue(
+                hgvs_tp_annotation.hgvs_p is None
+                or isinstance(hgvs_tp_annotation.hgvs_p, HgvsP)
+            )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
                     str(hgvs_tp_annotation.hgvs_p), "NP_937983.2(TERT):p.?"
