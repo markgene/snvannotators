@@ -1,4 +1,5 @@
-"""Test HgvsGAnnotator class."""
+
+"""Test HgvsGAnnotator class with TP53 c.754del."""
 
 import unittest
 
@@ -9,13 +10,13 @@ from snvannotators.hgvsplus.annotators.hgvsgannotator import HgvsGAnnotator
 from snvannotators.hgvsplus.models import HgvsG, HgvsP, HgvsT
 
 
-class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
-    """Test HgvsGAnnotator class with TERT promoter."""
+class HgvsGAnnotatorTp53c754delTestCase(unittest.TestCase):
+    """Test HgvsGAnnotator class with TP53 c.754del."""
 
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        sequence_variant_g = parse("NC_000005.9:g.1295228G>A")
+        sequence_variant_g = parse("NC_000017.10:g.7577527delG")
         hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g)
         alt_aln_method = "splign"
         tss_upstream_limit = 20000
@@ -26,7 +27,7 @@ class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
             tss_upstream_limit=tss_upstream_limit,
             uncertain=uncertain,
         ).annotate()
-        cls.tx_ac = "NM_198253.2"
+        cls.tx_ac = "NM_000546.5"
 
     def test_hgvs_annotation(self):
         self.assertTrue(isinstance(self.hgvs_annotation, HgvsAnnotation))
@@ -46,7 +47,7 @@ class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
             self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_t, HgvsT))
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
-                    str(hgvs_tp_annotation.hgvs_t), "NM_198253.2(TERT):c.-124C>T"
+                    str(hgvs_tp_annotation.hgvs_t), "NM_000546.5(TP53):c.754del"
                 )
 
     def test_hgvs_annotation_hgvs_p(self):
@@ -54,5 +55,5 @@ class HgvsGAnnotatorTertPromoterTestCase(unittest.TestCase):
             self.assertTrue(isinstance(hgvs_tp_annotation.hgvs_p, HgvsP))
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(
-                    str(hgvs_tp_annotation.hgvs_p), "NP_937983.2(TERT):p.?"
+                    str(hgvs_tp_annotation.hgvs_p), "NP_000537.3:p.Leu252SerfsTer93"
                 )
