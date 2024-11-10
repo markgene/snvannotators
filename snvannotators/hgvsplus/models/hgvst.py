@@ -21,8 +21,9 @@ class HgvsT(SequenceVariant):
         "deletion-insertion": "delins",
     }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, soft_validation: bool = True, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.soft_validation = soft_validation
         assert self.type in ["c", "n"]
         self.is_valid()
 
@@ -42,15 +43,20 @@ class HgvsT(SequenceVariant):
             ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_t
-    
+
     def is_valid(self) -> bool:
         sequence_variant_t = self.to_sequence_variant_t()
         try:
             is_valid = validate(sequence_variant_t)
         except HGVSInvalidIntervalError as err:
             if "coordinate is out of bounds" in str(err):
-                logger.warning("%s. The error is usually seen for promoter variant, e.g. c.-124")
-                is_valid = True
+                if self.soft_validation:
+                    logger.warning(
+                        "%s. The error is usually seen for promoter variant, e.g. c.-124"
+                    )
+                    is_valid = True
+                else:
+                    raise
             else:
                 raise
         return is_valid

@@ -49,7 +49,9 @@ class HgvsP(SequenceVariant):
     def __init__(self, soft_validation: bool = True, *args, **kwargs):
         """init
 
-        :param soft_validation: only raise errors when they are not recognized, defaults to True
+        :param soft_validation: only raise errors when they are not recognized, 
+            defaults to True. If False, raise errors no matter they are recognized
+            or not.
         :type soft_validation: bool, optional
         """
         super().__init__(*args, **kwargs)
