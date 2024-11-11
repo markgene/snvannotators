@@ -1,6 +1,6 @@
 """Annotate Cpra of GRCh37."""
 
-from typing import List
+from typing import Dict, List
 
 from pyoncokb.oncokbapi import OncokbApi
 from snvmodels.converters.cpratocspragrch37converter import CpraToCspraGrch37Converter
@@ -122,3 +122,14 @@ class CpraGrch37Annotator:
         if self.cspra is None:
             self.cspra = cpra_to_cspra_converter.convert(cpra=self.cpra)
         return self.cspra
+
+    def get_meta(self) -> Dict:
+        meta = {
+            "cpra": self.cpra,
+            "cspra": self.get_cspra(),
+            "alt_aln_method": self.alt_aln_method,
+            "tss_upstream_limit": self.tss_upstream_limit,
+            "uncertain": self.uncertain,
+            "promoter_tss_upstream_offset": self.promoter_tss_upstream_offset,
+        }
+        return meta
