@@ -24,6 +24,39 @@
             "module": "unittest"
         },
         {
+            "name": "tests.cpraannotators",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.cpraannotators"
+            ],
+        },
+        {
+            "name": "tests.cpraannotators.cpragrch37annotator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator"
+            ],
+        },
+        {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_ar_d891v",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_ar_d891v"
+            ],
+        },
+        {
             "name": "tests.hgvsplus",
             "type": "debugpy",
             "request": "launch",
