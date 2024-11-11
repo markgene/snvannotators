@@ -90,6 +90,17 @@
             ],
         },
         {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_kras_g12c",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_kras_g12c"
+            ],
+        },
+        {
             "name": "tests.hgvsplus",
             "type": "debugpy",
             "request": "launch",
