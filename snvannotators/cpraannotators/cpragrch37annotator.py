@@ -54,7 +54,9 @@ class CpraGrch37Annotator:
         self.tss_upstream_limit = tss_upstream_limit
         self.uncertain = uncertain
         self.promoter_tss_upstream_offset = promoter_tss_upstream_offset
-
+        self.cspra = None
+        self.genomic_range_1_based = None
+        # initialize internal attributes
         self.cspra = self.get_cspra()
         self.genomic_range_1_based = self.get_genomic_range_1_based()
         self.oncokb_cpra_grch37_annotator = OncokbCpraGrch37Annotator(
