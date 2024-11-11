@@ -68,6 +68,17 @@
             ],
         },
         {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_egfr_e746_a950del",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_egfr_e746_a950del"
+            ],
+        },
+        {
             "name": "tests.hgvsplus",
             "type": "debugpy",
             "request": "launch",

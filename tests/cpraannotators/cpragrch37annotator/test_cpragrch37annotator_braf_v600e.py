@@ -39,7 +39,7 @@ class CpraGrch37AnnotatorBrafV600eTestCase(unittest.TestCase):
         cls.transcript_feature_range_annotations = (
             snv_annotation.transcript_feature_range_annotations
         )
-        cls.tx_ac = "NM_004333.6"
+        cls.tx_ac = "NM_004333.4"
 
     def test_hgvs_annotation(self):
         self.assertTrue(isinstance(self.hgvs_annotation, HgvsAnnotation))
