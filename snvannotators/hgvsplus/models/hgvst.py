@@ -3,7 +3,7 @@
 import logging
 
 from hgvs.easy import validate
-from hgvs.exceptions import HGVSInvalidIntervalError
+from hgvs.exceptions import HGVSInvalidIntervalError, HGVSInvalidVariantError
 from hgvs.sequencevariant import SequenceVariant
 
 logger = logging.getLogger(__name__)
@@ -55,6 +55,18 @@ class HgvsT(SequenceVariant):
         return sequence_variant_t
 
     def is_valid(self) -> bool:
+        """Validate.
+        
+        The errors omitted and return as valid are:
+        
+        1. `HGVSInvalidIntervalError` with "coordinate is out of bounds". They are ususally promoter 
+            variants.
+        2. `HGVSInvalidVariantError` with "Cannot validate sequence of an intronic variant". They 
+            are usually intronic variants.
+
+        :return: True if valid. Otherwise, False.
+        :rtype: bool
+        """
         sequence_variant_t = self.to_sequence_variant_t()
         try:
             is_valid = validate(sequence_variant_t)
@@ -63,6 +75,17 @@ class HgvsT(SequenceVariant):
                 if self.soft_validation:
                     logger.warning(
                         "%s. The error is usually seen for promoter variant, e.g. c.-124"
+                    )
+                    is_valid = True
+                else:
+                    raise
+            else:
+                raise
+        except HGVSInvalidVariantError as err:
+            if "Cannot validate sequence of an intronic variant" in str(err):
+                if self.soft_validation:
+                    logger.warning(
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A"
                     )
                     is_valid = True
                 else:
