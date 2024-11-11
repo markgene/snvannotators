@@ -57,6 +57,17 @@
             ],
         },
         {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_braf_v600e",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_braf_v600e"
+            ],
+        },
+        {
             "name": "tests.hgvsplus",
             "type": "debugpy",
             "request": "launch",
