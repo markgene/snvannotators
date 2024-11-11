@@ -101,6 +101,17 @@
             ],
         },
         {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_met_exon14_skipping_donor_site",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_met_exon14_skipping_donor_site"
+            ],
+        },
+        {
             "name": "tests.hgvsplus",
             "type": "debugpy",
             "request": "launch",
