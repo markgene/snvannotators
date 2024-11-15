@@ -16,12 +16,15 @@ class HgvsParser:
             cls.instance = super().__new__(cls)
         return cls.instance
 
-    def parse(self, s: str):
+    def parse(self, s: str, c_as_t: bool=True):
         sequence_variant = self.parse_sequence_variant(s=s)
         if sequence_variant.type == "g":
             return HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant)
         if sequence_variant.type == "c":
-            return HgvsC.from_sequence_variant_c(sequence_variant_c=sequence_variant)
+            if c_as_t:
+                return HgvsT.from_sequence_variant_t(sequence_variant_t=sequence_variant)
+            else:
+                return HgvsC.from_sequence_variant_c(sequence_variant_c=sequence_variant)
         if sequence_variant.type == "n":
             return HgvsT.from_sequence_variant_t(sequence_variant_t=sequence_variant)
         if sequence_variant.type == "p":

@@ -27,7 +27,10 @@ def prepare(data) -> Any:
                 if value is None:
                     data[key] = value
                 elif isinstance(value, str):
-                    data[key] = hgvs_parser.parse(value)
+                    if ":" in value:
+                        data[key] = hgvs_parser.parse(s=value)
+                    else:
+                        data[key] = value
                 elif (
                     isinstance(value, SequenceVariant)
                     or isinstance(value, HgvsC)
