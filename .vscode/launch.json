@@ -284,6 +284,28 @@
                 "-v",
                 "tests.snvannotation"
             ],
+        },
+        {
+            "name": "tests.snvannotation.snvannotationdeserializer",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.snvannotation.snvannotationdeserializer"
+            ],
+        },
+        {
+            "name": "tests.snvannotation.snvannotationserializer",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.snvannotation.snvannotationserializer"
+            ],
         }
     ]
 }
