@@ -233,6 +233,17 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.parsers",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.parsers"
+            ],
+        },
+        {
             "name": "tests.myvariant",
             "type": "debugpy",
             "request": "launch",

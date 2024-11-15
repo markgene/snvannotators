@@ -1,4 +1,7 @@
-"""Serialize SnvAnnotation."""
+"""Serialize SnvAnnotation.
+
+Returns a dict instead of JSON string.
+"""
 
 from dataclasses import asdict
 from datetime import datetime
@@ -57,10 +60,15 @@ def to_dict(
 
 
 class SnvAnnotationSerializer:
+    """Serialize SnvAnnotation.
+
+    Returns a dict instead of JSON string.
+    """
+    
     def __init__(self, snv_annotation: SnvAnnotation):
         self.snv_annotation = snv_annotation
 
-    def serialize(self) -> dict:
+    def serialize(self) -> Dict:
         d = to_dict(
             asdict(self.snv_annotation),
             datetime_as_str=True,
