@@ -262,6 +262,17 @@
                 "-v",
                 "tests.oncokb"
             ],
+        },
+        {
+            "name": "tests.snvannotation",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.snvannotation"
+            ],
         }
     ]
 }
