@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='snvannotators',               # The name of your package
-    version='0.0.1',                 # Initial version
+    version='0.0.2',                 # Initial version
     description='SNV annotation',
     long_description=open('README.md').read(),  # Long description from README
     long_description_content_type='text/markdown',
