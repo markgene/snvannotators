@@ -64,7 +64,7 @@ class CpraGrch37Annotator:
         )
         self.myvariant_cpra_annotator = MyvariantCpraAnnotator()
 
-    def annotate(self):
+    def annotate(self) -> SnvAnnotation:
         cspra = self.get_cspra()
         indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(
             cpra=self.cpra
