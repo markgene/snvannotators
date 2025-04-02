@@ -16,6 +16,7 @@ from transcriptfeatures.annotators.rangeannotators.transcriptfeaturerangeannotat
 
 from snvannotators.hgvsplus.annotators.hgvsannotation import HgvsAnnotation
 from snvannotators.myvariant.annotation import MyvariantAnnotation
+from .knowledgebaseitem import KnowledgebaseItem
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,7 @@ class SnvAnnotation:
         List[TranscriptFeatureRangeAnnotation]
     ]
     meta: Any
+    knowledgebase_items: Optional[List[KnowledgebaseItem]] = None
 
     def __post_init__(self):
         if (
@@ -58,6 +60,7 @@ class SnvAnnotation:
             raise ValueError(
                 "transcript_feature_range_annotations must be None or a list"
             )
+        else:
             for (
                 transcript_feature_range_annotation
             ) in self.transcript_feature_range_annotations:
@@ -67,6 +70,12 @@ class SnvAnnotation:
                 ):
                     raise ValueError(
                         "transcript_feature_range_annotation must be a TranscriptFeatureRangeAnnotation object"
+                    )
+        if self.knowledgebase_items is not None:
+            for knowledgebase_item in self.knowledgebase_items:
+                if not isinstance(knowledgebase_item, KnowledgebaseItem):
+                    raise ValueError(
+                        "knowledgebase_items item must be a KnowledgebaseItem object"
                     )
 
     def is_oncogenic(self) -> Optional[bool]:
@@ -151,3 +160,8 @@ class SnvAnnotation:
         gene_symbol = self.get_gene_symbol()
         url = f"https://pecan.stjude.cloud/variants/proteinpaint?gene={ gene_symbol }"
         return url
+
+    def add_knowledgebase_item(self, knowledgebase_item: KnowledgebaseItem):
+        if self.knowledgebase_items is None:
+            self.knowledgebase_items = []
+        self.knowledgebase_items.append(knowledgebase_item)
