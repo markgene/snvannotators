@@ -2,13 +2,12 @@
 
 import unittest
 
-from snvannotators.hgvsplus.models import HgvsC, HgvsG, HgvsP, HgvsT
+from snvannotators.hgvsplus.models import HgvsC, HgvsG, HgvsP
 from snvannotators.hgvsplus.parsers.hgvsparser import HgvsParser
-from snvmodels.cpra import Cpra
 
 
-class CpraGrch37AnnotatorArD891vTestCase(unittest.TestCase):
-    """Test CpraGrch37Annotator class with AR D891V."""
+class HgvsParserTestCase(unittest.TestCase):
+    """Test HgvsParser."""
 
     @classmethod
     def setUpClass(cls) -> None:
