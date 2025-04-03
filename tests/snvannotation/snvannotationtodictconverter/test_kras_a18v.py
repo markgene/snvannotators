@@ -2,10 +2,7 @@
 
 import unittest
 
-from dacite import from_dict
-
 from snvannotators.hgvsplus.parsers.hgvsparser import HgvsParser
-from snvannotators.snvannotation.snvannotation import SnvAnnotation
 from snvannotators.snvannotation.snvannotationbuilder import (
     SnvAnnotationBuilder,
 )
@@ -18,19 +15,6 @@ class SnvAnnotationToDictConverterKrasA18vTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        # config = TestConfig()
-        # cpra = Cpra(chrom="chr12", pos=25398266, ref="G", alt="A")
-        # oncokb_auth = config.get_oncokb_authorization()
-        # oncokb_api = OncokbApi(auth=oncokb_auth)
-        # cpra_annotator = CpraGrch37Annotator(
-        #     cpra=cpra,
-        #     oncokb_api=oncokb_api,
-        #     alt_aln_method="splign",
-        #     tss_upstream_limit=20000,
-        #     uncertain=False,
-        #     promoter_tss_upstream_offset=1500,
-        # )
-        # snv_annotation = cpra_annotator.annotate()
         hgvs_parser = HgvsParser()
         d = {
             "snv": {

@@ -9,8 +9,9 @@ KRAS p.A18V
 ```python
 from pyoncokb.oncokbapi import OncokbApi
 from snvannotators.cpraannotators.cpragrch37annotator import CpraGrch37Annotator
-from snvannotators.snvannotation.snvannotationserializer import SnvAnnotationSerializer
+from snvannotators.snvannotation.snvannotationtodictconverter import SnvAnnotationToDictConverter
 from snvmodels.cpra import Cpra
+from tests.testconfig import TestConfig
 
 # Create a Cpra object of a SNV
 cpra = Cpra(chrom="chr12", pos=25398266, ref="G", alt="A")
@@ -40,16 +41,17 @@ pprint(snv_annotation.__annotations__)
 ```python
 {'hgvs_annotation': <class 'snvannotators.hgvsplus.annotators.hgvsannotation.HgvsAnnotation'>,
  'indicator_query_resp': typing.Optional[pyoncokb.models.indicatorqueryresp.IndicatorQueryResp],
+ 'knowledgebase_items': typing.Optional[typing.List[snvannotators.snvannotation.knowledgebaseitem.KnowledgebaseItem]],
  'meta': typing.Any,
  'myvariant_annotation': <class 'snvannotators.myvariant.annotation.myvariantannotation.MyvariantAnnotation'>,
- 'snv': typing.Union[snvmodels.cpra.cpra.Cpra, snvmodels.spra.cspra.Cspra, snvmodels.spra.spra.Spra, hgvs.sequencevariant.SequenceVariant, str],
+ 'snv': typing.Union[snvmodels.spra.cspra.Cspra, snvmodels.cpra.cpra.Cpra, snvmodels.spra.spra.Spra, hgvs.sequencevariant.SequenceVariant, str],
  'transcript_feature_range_annotations': typing.Optional[typing.List[transcriptfeatures.annotators.rangeannotators.transcriptfeaturerangeannotation.TranscriptFeatureRangeAnnotation]]}
 ```
 
 Below shows the full data:
 
 ```python
-SnvAnnotationSerializer(snv_annotation=snv_annotation).serialize()
+SnvAnnotationToDictConverter().convert(snv_annotation=snv_annotation)
 ```
 
 ```python
