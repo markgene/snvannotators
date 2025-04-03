@@ -1,5 +1,6 @@
 """Build SnvAnnotation object."""
 
+import copy
 from typing import Any, Dict
 
 from dacite import from_dict
@@ -21,6 +22,8 @@ def prepare(data) -> Any:
         "hgvs_t",
         "hgvs_p",
     ]
+    # Deep copy so that the original will not be changed.
+    data = copy.deepcopy(data)
     if isinstance(data, dict):
         for key, value in data.items():
             if key in sequence_variant_field_names:
