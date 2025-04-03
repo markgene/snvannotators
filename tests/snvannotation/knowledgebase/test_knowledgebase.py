@@ -23,4 +23,4 @@ class KnowledgebaseTestCase(unittest.TestCase):
         self.assertFalse(knowledgebase.is_valid())
         with self.assertRaises(Exception) as context:
             knowledgebase.validate()
-        self.assertTrue("knowledgebase_type invalid type must be" in context)
+        self.assertTrue("knowledgebase_type invalid type must be" in str(context.exception))

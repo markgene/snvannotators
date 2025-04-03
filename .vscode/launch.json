@@ -297,6 +297,17 @@
             ],
         },
         {
+            "name": "tests.snvannotation.knowledgebaseitem",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.snvannotation.knowledgebaseitem"
+            ],
+        },
+        {
             "name": "tests.snvannotation.snvannotationbuilder",
             "type": "debugpy",
             "request": "launch",
