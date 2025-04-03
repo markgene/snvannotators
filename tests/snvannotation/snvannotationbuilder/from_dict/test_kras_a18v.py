@@ -1,20 +1,20 @@
-"""Test SnvAnnotationDeserializer class with KRAS A18V."""
+"""Test SnvAnnotationBuilder class from_dict method with KRAS A18V."""
 
 import unittest
 
 from snvannotators.snvannotation.snvannotation import SnvAnnotation
-from snvannotators.snvannotation.snvannotationdeserializer import (
-    SnvAnnotationDeserializer,
+from snvannotators.snvannotation.snvannotationbuilder import (
+    SnvAnnotationBuilder,
 )
 
 
-class SnvAnnotationDeserializerKrasA18vTestCase(unittest.TestCase):
-    """Test SnvAnnotationDeserializer class with KRAS A18V."""
+class SnvAnnotationBuilderFromDictKrasA18vTestCase(unittest.TestCase):
+    """Test SnvAnnotationBuilder class from_dict method with KRAS A18V."""
 
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.data = {
+        data = {
             "snv": {
                 "ac": "NC_000012.11",
                 "pos": 25398266,
@@ -2667,8 +2667,12 @@ class SnvAnnotationDeserializerKrasA18vTestCase(unittest.TestCase):
                 "promoter_tss_upstream_offset": 1500,
             },
         }
-        cls.snv_annotation_deserializer = SnvAnnotationDeserializer()
+        snv_annotation_builder = SnvAnnotationBuilder()
+        cls.snv_annotation = snv_annotation_builder.from_dict(data=data)
+        cls.data = data
 
-    def test_deeserialize(self):
-        snv_annotation = self.snv_annotation_deserializer.deserialize(data=self.data)
-        self.assertTrue(isinstance(snv_annotation, SnvAnnotation))
+    def test_is_snv_annotation_object(self):
+        self.assertTrue(isinstance(self.snv_annotation, SnvAnnotation))
+        
+    def test_snv_chrom(self):
+        self.assertTrue(self.snv_annotation.snv.chrom, self.data["snv"]["chrom"])

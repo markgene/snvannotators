@@ -54,7 +54,7 @@ def prepare(data) -> Any:
         return data
 
 
-class SnvAnnotationDeserializer:
+class SnvAnnotationBuilder:
     instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -62,7 +62,7 @@ class SnvAnnotationDeserializer:
             cls.instance = super().__new__(cls)
         return cls.instance
 
-    def deserialize(self, data: Dict) -> SnvAnnotation:
+    def from_dict(self, data: Dict) -> SnvAnnotation:
         prepared = prepare(data)
         snv_annotation = from_dict(data_class=SnvAnnotation, data=prepared)
         return snv_annotation
