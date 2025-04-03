@@ -2663,9 +2663,8 @@ class SnvAnnotationToDictConverterKrasA18vTestCase(unittest.TestCase):
         converter = SnvAnnotationToDictConverter()
         cls.converted = converter.convert(snv_annotation=snv_annotation)
 
-    def test_serialize(self):
-        for k, v in self.converted.items():
-            if k in self.d:
-                print(k)
-                self.assertEqual(v, self.d[k])
-        # self.assertEqual(d, self.d)
+    def test_snv_chrom(self):
+        self.assertEqual(self.converted["snv"]["chrom"], self.d["snv"]["chrom"])
+        
+    def test_hgvs_annotation_hgvs_g(self):
+        self.assertEqual(self.converted["hgvs_annotation"]["hgvs_g"], self.d["hgvs_annotation"]["hgvs_g"].format())

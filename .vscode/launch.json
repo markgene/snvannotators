@@ -297,14 +297,14 @@
             ],
         },
         {
-            "name": "tests.snvannotation.snvannotationserializer",
+            "name": "tests.snvannotation.snvannotationtodictconverter",
             "type": "debugpy",
             "request": "launch",
             "module": "unittest",
             "args": [
                 "discover",
                 "-v",
-                "tests.snvannotation.snvannotationserializer"
+                "tests.snvannotation.snvannotationtodictconverter"
             ],
         }
     ]
