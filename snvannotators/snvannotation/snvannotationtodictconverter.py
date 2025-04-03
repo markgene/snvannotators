@@ -1,7 +1,4 @@
-"""Serialize SnvAnnotation.
-
-Returns a dict instead of JSON string.
-"""
+"""Convert SnvAnnotation object to dict."""
 
 from dataclasses import asdict
 from datetime import datetime
@@ -59,18 +56,19 @@ def to_dict(
     return obj
 
 
-class SnvAnnotationSerializer:
-    """Serialize SnvAnnotation.
+class SnvAnnotationToDictConverter:
+    """Convert SnvAnnotation object to dict."""
 
-    Returns a dict instead of JSON string.
-    """
-    
-    def __init__(self, snv_annotation: SnvAnnotation):
-        self.snv_annotation = snv_annotation
+    instance = None
 
-    def serialize(self) -> Dict:
+    def __new__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
+    def convert(self, snv_annotation: SnvAnnotation) -> Dict:
         d = to_dict(
-            asdict(self.snv_annotation),
+            asdict(snv_annotation),
             datetime_as_str=True,
             sequence_variant_as_str=True,
         )
