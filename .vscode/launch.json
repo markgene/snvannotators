@@ -286,6 +286,17 @@
             ],
         },
         {
+            "name": "tests.snvannotation.knowledgebase",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.snvannotation.knowledgebase"
+            ],
+        },
+        {
             "name": "tests.snvannotation.snvannotationbuilder",
             "type": "debugpy",
             "request": "launch",
