@@ -16,3 +16,9 @@ class KnowledgebaseItem:
             raise ValueError(
                 f"knowledgebase {self.knowledgebase} must be a Knowledgebase object"
             )
+
+    def validate(self):
+        self.knowledgebase.validate()
+
+    def is_valid(self) -> bool:
+        return self.knowledgebase.is_valid()
