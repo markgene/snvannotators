@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class SnvAnnotation:
     """SNV pure annotation without variant information."""
 
-    snv: Union[Cpra, Cspra, Spra, SequenceVariant, str]
+    snv: Union[Cspra, Cpra, Spra, SequenceVariant, str]
     hgvs_annotation: HgvsAnnotation
     myvariant_annotation: MyvariantAnnotation
     indicator_query_resp: Optional[IndicatorQueryResp]
