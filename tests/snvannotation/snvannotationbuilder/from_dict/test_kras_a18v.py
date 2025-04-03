@@ -2,6 +2,21 @@
 
 import unittest
 
+# from hgvs.posedit import PosEdit
+
+# from pyoncokb.models.indicatorqueryresp import IndicatorQueryResp
+# from snvmodels.cpra.cpra import Cpra
+# from snvmodels.spra.cspra import Cspra
+# from snvmodels.spra.spra import Spra
+# from transcriptfeatures.annotators.rangeannotators.transcriptfeaturerangeannotation import (
+#     TranscriptFeatureRangeAnnotation,
+# )
+
+# from snvannotators.hgvsplus.annotators.hgvsannotation import HgvsAnnotation
+# from snvannotators.hgvsplus.models.hgvsg import HgvsG
+# from snvannotators.myvariant.annotation import MyvariantAnnotation
+# from snvannotators.snvannotation.knowledgebase import Knowledgebase
+# from snvannotators.snvannotation.knowledgebaseitem import KnowledgebaseItem
 from snvannotators.snvannotation.snvannotation import SnvAnnotation
 from snvannotators.snvannotation.snvannotationbuilder import (
     SnvAnnotationBuilder,
@@ -30,41 +45,6 @@ class SnvAnnotationBuilderFromDictKrasA18vTestCase(unittest.TestCase):
                         "tx_ac": "NM_001369787.1",
                         "hgvs_t": "NM_001369787.1(KRAS):c.53C>T",
                         "hgvs_p": "NP_001356716.1:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_033360.2",
-                        "hgvs_t": "NM_033360.2(KRAS):c.53C>T",
-                        "hgvs_p": "NP_203524.1:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_001369786.1",
-                        "hgvs_t": "NM_001369786.1(KRAS):c.53C>T",
-                        "hgvs_p": "NP_001356715.1:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_033360.3",
-                        "hgvs_t": "NM_033360.3(KRAS):c.53C>T",
-                        "hgvs_p": "NP_203524.1:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_004985.4",
-                        "hgvs_t": "NM_004985.4(KRAS):c.53C>T",
-                        "hgvs_p": "NP_004976.2:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_033360.4",
-                        "hgvs_t": "NM_033360.4(KRAS):c.53C>T",
-                        "hgvs_p": "NP_203524.1:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_004985.5",
-                        "hgvs_t": "NM_004985.5(KRAS):c.53C>T",
-                        "hgvs_p": "NP_004976.2:p.Ala18Val",
-                    },
-                    {
-                        "tx_ac": "NM_004985.3",
-                        "hgvs_t": "NM_004985.3(KRAS):c.53C>T",
-                        "hgvs_p": "NP_004976.2:p.Ala18Val",
                     },
                 ],
             },
@@ -2676,3 +2656,6 @@ class SnvAnnotationBuilderFromDictKrasA18vTestCase(unittest.TestCase):
         
     def test_snv_chrom(self):
         self.assertTrue(self.snv_annotation.snv.chrom, self.data["snv"]["chrom"])
+        
+    def test_hgvs_annotation_hgvs_g(self):
+        self.assertEqual(self.snv_annotation.hgvs_annotation.hgvs_g.format(), self.data["hgvs_annotation"]["hgvs_g"])

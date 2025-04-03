@@ -1,4 +1,4 @@
-"""Deserialize a serialized SnvAnnotation of dict."""
+"""Build SnvAnnotation object."""
 
 from typing import Any, Dict
 

@@ -286,14 +286,14 @@
             ],
         },
         {
-            "name": "tests.snvannotation.snvannotationdeserializer",
+            "name": "tests.snvannotation.snvannotationbuilder",
             "type": "debugpy",
             "request": "launch",
             "module": "unittest",
             "args": [
                 "discover",
                 "-v",
-                "tests.snvannotation.snvannotationdeserializer"
+                "tests.snvannotation.snvannotationbuilder"
             ],
         },
         {
