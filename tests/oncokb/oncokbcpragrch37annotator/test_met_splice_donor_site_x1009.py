@@ -1,4 +1,4 @@
-"""Test OncokbCpraAnnotator class with MET c.3028+1del."""
+"""Test OncokbCpraGrch37Annotator class with MET splice donor site X1009."""
 
 import unittest
 

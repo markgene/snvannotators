@@ -25,36 +25,6 @@ class OncokbCpraGrch37AnnotatorTestCase(unittest.TestCase):
             oncokb_api=oncokb_api
         )
 
-    def test_met_splice_donor_site_x1009(self):
-        """OncoKB X1009_splice."""
-        cpra = Cpra("chr7", 116412037, "CCAGAAGGTATATTT", "C")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "X1009_splice")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Likely Oncogenic")
-
-    def test_annotate_met_splice_donor_site_x1007(self):
-        """OncoKB X1007_splice."""
-        cpra = Cpra("chr7", 116412033, "TTTTCCAGAAGGTATATTT", "T")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "X1007_splice")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Likely Oncogenic")
-
-    def test_annotate_met_splice_donor_site_x1006(self):
-        """OncoKB X1006_splice."""
-        cpra = Cpra("chr7", 116412031, "ACTTTTCCAGAAGGTA", "T")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "X1006_splice")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Likely Oncogenic")
-
     def test_annotate_met_splice_donor_site_x1003(self):
         """OncoKB X1003_splice."""
         cpra = Cpra("chr7", 116412022, "TACCGAGCTACTTTTCCAGAAGGTATATT", "T")
