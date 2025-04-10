@@ -1,13 +1,15 @@
 """Convert HgvsC to HgvsP.
 
 Sometimes, the c_to_p method does not work as expected. For example, given
-"NM_005343.2:c.2T>G", it will return a SequenceVariant object with its 
-posedit field of AARefAlt class, where a PosEdit class is expected. 
+"NM_005343.2:c.2T>G", it will return a SequenceVariant object with its
+posedit field of AARefAlt class, where a PosEdit class is expected.
 """
 
 import logging
+from typing import Optional
 
-from hgvs.easy import am37, am38, parse
+from hgvs.assemblymapper import AssemblyMapper
+from hgvs.easy import hgvs_data_provider, parse
 from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.posedit import PosEdit
 from hgvs.sequencevariant import SequenceVariant
@@ -28,13 +30,32 @@ class HgvsCToPMapper:
     posedit field of AARefAlt class, where a PosEdit class is expected.
     """
 
-    def __init__(self, hgvs_c: HgvsC):
+    def __init__(self, hgvs_c: HgvsC, assembly_name: str = "GRCh37"):
         self.hgvs_c = hgvs_c
+        self.assembly_name = assembly_name
+        self.assembly_mapper: Optional[AssemblyMapper] = None
+        self.init_assembly_mapper()
         self.__post_init__()
 
     def __post_init__(self):
         if not isinstance(self.hgvs_c, HgvsC):
             raise ValueError(f"hgvs_c {self.hgvs_c} must be a HgvsC")
+        if self.assembly_mapper is None:
+            raise ValueError("assembly_mapper must be not None")
+        if not isinstance(self.assembly_mapper, AssemblyMapper):
+            raise ValueError("assembly_mapper must be an AssemblyMapper object")
+
+    def init_assembly_mapper(self):
+        assert self.assembly_name in ["hg19", "hg38", "GRCh37", "GRCh38"]
+        if self.assembly_name == "hg19":
+            assembly_name = "GRCh37"
+        elif self.assembly_name == "hg38":
+            assembly_name = "GRCh38"
+        else:
+            assembly_name = self.assembly_name
+        self.assembly_mapper = AssemblyMapper(
+            hgvs_data_provider, assembly_name=assembly_name
+        )
 
     def map(self) -> HgvsP:
         """Map SequenceVariant C to P type.
@@ -69,10 +90,10 @@ class HgvsCToPMapper:
 
     def get_sequence_variant_p(self) -> SequenceVariant:
         try:
-            sequence_variant_p = am37.c_to_p(self.hgvs_c)
+            sequence_variant_p = self.assembly_mapper.c_to_p(self.hgvs_c)
         except Exception as err:
             logger.info("fail to convert %s with GRCh37: %s", self.hgvs_c, err)
-            sequence_variant_p = am38.c_to_p(self.hgvs_c)
+            sequence_variant_p = self.assembly_mapper.c_to_p(self.hgvs_c)
         return sequence_variant_p
 
     @staticmethod

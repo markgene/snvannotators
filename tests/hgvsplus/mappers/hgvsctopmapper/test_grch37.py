@@ -8,8 +8,8 @@ from snvannotators.hgvsplus.mappers.hgvsctopmapper import HgvsCToPMapper
 from snvannotators.hgvsplus.models import HgvsC, HgvsP
 
 
-class HgvsCToPMapperTestCase(unittest.TestCase):
-    """Test HgvsCToPMapper class."""
+class HgvsCToPMapperGrch37TestCase(unittest.TestCase):
+    """Test HgvsCToPMapper class with GRCh37."""
 
     def test_convert_promoter(self):
         """Test convert HGVS c at promoter region."""
