@@ -6,10 +6,9 @@ posedit field of AARefAlt class, where a PosEdit class is expected.
 """
 
 import logging
-from typing import Optional
 
 from hgvs.assemblymapper import AssemblyMapper
-from hgvs.easy import hgvs_data_provider, parse
+from hgvs.easy import am37, parse
 from hgvs.exceptions import HGVSInvalidIntervalError
 from hgvs.posedit import PosEdit
 from hgvs.sequencevariant import SequenceVariant
@@ -30,11 +29,9 @@ class HgvsCToPMapper:
     posedit field of AARefAlt class, where a PosEdit class is expected.
     """
 
-    def __init__(self, hgvs_c: HgvsC, assembly_name: str = "GRCh37"):
+    def __init__(self, hgvs_c: HgvsC, assembly_mapper: AssemblyMapper = am37):
         self.hgvs_c = hgvs_c
-        self.assembly_name = assembly_name
-        self.assembly_mapper: Optional[AssemblyMapper] = None
-        self.init_assembly_mapper()
+        self.assembly_mapper = assembly_mapper
         self.__post_init__()
 
     def __post_init__(self):
@@ -44,18 +41,6 @@ class HgvsCToPMapper:
             raise ValueError("assembly_mapper must be not None")
         if not isinstance(self.assembly_mapper, AssemblyMapper):
             raise ValueError("assembly_mapper must be an AssemblyMapper object")
-
-    def init_assembly_mapper(self):
-        assert self.assembly_name in ["hg19", "hg38", "GRCh37", "GRCh38"]
-        if self.assembly_name == "hg19":
-            assembly_name = "GRCh37"
-        elif self.assembly_name == "hg38":
-            assembly_name = "GRCh38"
-        else:
-            assembly_name = self.assembly_name
-        self.assembly_mapper = AssemblyMapper(
-            hgvs_data_provider, assembly_name=assembly_name
-        )
 
     def map(self) -> HgvsP:
         """Map SequenceVariant C to P type.
