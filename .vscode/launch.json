@@ -308,6 +308,17 @@
             ],
         },
         {
+            "name": "tests.oncokb.oncokbcpragrch37annotator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.oncokb.oncokbcpragrch37annotator"
+            ],
+        },
+        {
             "name": "tests.snvannotation",
             "type": "debugpy",
             "request": "launch",

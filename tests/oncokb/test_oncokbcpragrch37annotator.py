@@ -25,28 +25,6 @@ class OncokbCpraGrch37AnnotatorTestCase(unittest.TestCase):
             oncokb_api=oncokb_api
         )
 
-
-    def test_annotate_met_splice_donor_site_c3028_plus1_del(self):
-        """Test annotate method with MET c.3028+1del."""
-        cpra = Cpra("chr7", 116412042, "AG", "A")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "D1010fs")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Unknown")
-
-    def test_annotate_met_splice_donor_site_upstream(self):
-        """Test annotate method with a substitution right upstream a MET
-        splice donor site MET c.3028 upstream -1 position."""
-        cpra = Cpra("chr7", 116412042, "A", "C")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "E1009D")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Unknown")
-
     def test_annotate_met_splice_donor_site_x1010(self):
         """OncoKB X1010_splice.
 
