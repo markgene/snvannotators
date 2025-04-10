@@ -16,7 +16,7 @@ config = TestConfig()
 class OncokbCpraGrch37AnnotatorMetSpliceDonorSiteC3028Plus1DelTestCase(
     OncokbCpraGrch37AnnotatorTestTemplate, unittest.TestCase
 ):
-    """Test OncokbCpraAnnotator class with MET c.3028+1del."""
+    """Test OncokbCpraGrch37Annotator class with MET c.3028+1del."""
 
     @classmethod
     def setUpClass(cls) -> None:

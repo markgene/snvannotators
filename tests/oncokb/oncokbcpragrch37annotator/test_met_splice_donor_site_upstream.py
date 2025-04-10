@@ -1,4 +1,4 @@
-"""Test OncokbCpraAnnotator class with AR D891V."""
+"""Test OncokbCpraAnnotator class with MET c.3028+1del."""
 
 import unittest
 
@@ -13,10 +13,13 @@ from .oncokbcpragrch37annotatortesttemplate import OncokbCpraGrch37AnnotatorTest
 config = TestConfig()
 
 
-class OncokbCpraGrch37AnnotatorArD891vTestCase(
+class OncokbCpraGrch37AnnotatorMetSpliceDonorSiteUpstreamTestCase(
     OncokbCpraGrch37AnnotatorTestTemplate, unittest.TestCase
 ):
-    """Test OncokbCpraGrch37Annotator class with AR D891V."""
+    """Test OncokbCpraGrch37Annotator class with MET splice donor site upstream mutation.
+
+    A substitution right upstream a MET splice donor site MET c.3028 upstream -1 position.
+    """
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -25,11 +28,11 @@ class OncokbCpraGrch37AnnotatorArD891vTestCase(
         oncokb_auth = config.get_oncokb_authorization()
         oncokb_api = OncokbApi(auth=oncokb_auth)
         oncokb_cpra_annotator = OncokbCpraGrch37Annotator(oncokb_api=oncokb_api)
-        cpra = Cpra(chrom="chrX", pos=66943592, ref="A", alt="T")
+        cpra = Cpra("chr7", 116412042, "A", "C")
         cls.indicator_query_resp = oncokb_cpra_annotator.annotate(cpra=cpra)
-        cls.query_alteration = "D891V"
-        cls.query_entrez_gene_id = 367
-        cls.query_hugo_symbol = "AR"
+        cls.query_alteration = "E1009D"
+        cls.query_entrez_gene_id = 4233
+        cls.query_hugo_symbol = "MET"
         cls.query_tumor_type = None
         cls.highest_diagnostic_implication_level = None
         cls.highest_fda_level = None

@@ -16,7 +16,7 @@ config = TestConfig()
 class OncokbCpraGrch37AnnotatorBrafV600eTestCase(
     OncokbCpraGrch37AnnotatorTestTemplate, unittest.TestCase
 ):
-    """Test OncokbCpraAnnotator class with BRAF V600E."""
+    """Test OncokbCpraGrch37Annotator class with BRAF V600E."""
 
     @classmethod
     def setUpClass(cls) -> None:
