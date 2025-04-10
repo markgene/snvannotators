@@ -1,4 +1,4 @@
-"""Test OncokbCpraAnnotator class with BRAF V600E."""
+"""Test OncokbCpraAnnotator class with MET c.3028+1del."""
 
 import unittest
 
@@ -13,10 +13,10 @@ from .oncokbcpragrch37annotatortesttemplate import OncokbCpraGrch37AnnotatorTest
 config = TestConfig()
 
 
-class OncokbCpraGrch37AnnotatorBrafV600eTestCase(
+class OncokbCpraGrch37AnnotatorMetSpliceDonorSiteC3028Plus1DelTestCase(
     OncokbCpraGrch37AnnotatorTestTemplate, unittest.TestCase
 ):
-    """Test OncokbCpraAnnotator class with BRAF V600E."""
+    """Test OncokbCpraAnnotator class with MET c.3028+1del."""
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -25,21 +25,21 @@ class OncokbCpraGrch37AnnotatorBrafV600eTestCase(
         oncokb_auth = config.get_oncokb_authorization()
         oncokb_api = OncokbApi(auth=oncokb_auth)
         oncokb_cpra_annotator = OncokbCpraGrch37Annotator(oncokb_api=oncokb_api)
-        cpra = Cpra(chrom="chr7", pos=140453136, ref="A", alt="T")
+        cpra = Cpra("chr7", 116412042, "AG", "A")
         cls.indicator_query_resp = oncokb_cpra_annotator.annotate(cpra=cpra)
-        cls.query_alteration = "V600E"
-        cls.query_entrez_gene_id = 673
-        cls.query_hugo_symbol = "BRAF"
+        cls.query_alteration = "D1010fs"
+        cls.query_entrez_gene_id = 4233
+        cls.query_hugo_symbol = "MET"
         cls.query_tumor_type = None
-        cls.highest_diagnostic_implication_level = "LEVEL_Dx2"
-        cls.highest_fda_level = "LEVEL_Fda2"
+        cls.highest_diagnostic_implication_level = None
+        cls.highest_fda_level = None
         cls.highest_prognostic_implication_level = None
         cls.highest_resistance_level = None
-        cls.highest_sensitive_level = "LEVEL_1"
-        cls.mutation_effect_known_effect = "Gain-of-function"
-        cls.oncogenic = "Oncogenic"
-        cls.allele_exist = True
+        cls.highest_sensitive_level = None
+        cls.mutation_effect_known_effect = "Unknown"
+        cls.oncogenic = "Unknown"
+        cls.allele_exist = False
         cls.variant_exist = True
-        cls.hotspot = True
-        cls.vus = False
+        cls.hotspot = False
+        cls.vus = True
         cls.tumor_type_summary = ""

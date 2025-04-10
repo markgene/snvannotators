@@ -38,6 +38,7 @@ class OncokbCpraGrch37AnnotatorArD891vTestCase(
         cls.highest_sensitive_level = None
         cls.mutation_effect_known_effect = "Unknown"
         cls.oncogenic = "Unknown"
+        cls.allele_exist = True
         cls.variant_exist = False
         cls.hotspot = False
         cls.vus = False

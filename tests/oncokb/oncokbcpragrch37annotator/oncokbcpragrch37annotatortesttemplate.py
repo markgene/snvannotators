@@ -38,7 +38,12 @@ class OncokbCpraGrch37AnnotatorTestTemplate:
     #     cls.tumor_type_summary = ""
 
     def test_allele_exist(self):
-        self.assertTrue(self.indicator_query_resp.allele_exist)
+        if self.allele_exist is True:
+            self.assertTrue(self.indicator_query_resp.allele_exist)
+        elif self.allele_exist is False:
+            self.assertFalse(self.indicator_query_resp.allele_exist)
+        else:
+            raise ValueError("allele_exist must be True or False")
 
     def test_query_alteration(self):
         self.assertEqual(

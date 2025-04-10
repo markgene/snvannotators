@@ -25,33 +25,6 @@ class OncokbCpraGrch37AnnotatorTestCase(unittest.TestCase):
             oncokb_api=oncokb_api
         )
 
-    def test_annotate_braf_v600e(self):
-        """Test annotate method."""
-        cpra = Cpra(chrom="chr7", pos=140453136, ref="A", alt="T")
-        braf_v600e = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(braf_v600e.allele_exist)
-        self.assertEqual(braf_v600e.query.alteration, "V600E")
-        self.assertEqual(braf_v600e.query.entrez_gene_id, 673)
-        self.assertTrue(braf_v600e.gene_exist)
-        self.assertEqual(braf_v600e.query.hugo_symbol, "BRAF")
-        self.assertEqual(braf_v600e.highest_diagnostic_implication_level, "LEVEL_Dx2")
-        self.assertEqual(braf_v600e.highest_fda_level, "LEVEL_Fda2")
-        self.assertIsNone(braf_v600e.highest_prognostic_implication_level)
-        self.assertIsNone(braf_v600e.highest_resistance_level)
-        self.assertEqual(braf_v600e.highest_sensitive_level, "LEVEL_1")
-        self.assertTrue(braf_v600e.hotspot)
-        self.assertEqual(braf_v600e.mutation_effect.known_effect, "Gain-of-function")
-        self.assertEqual(braf_v600e.oncogenic, "Oncogenic")
-        self.assertIsNone(braf_v600e.query.tumor_type)
-        self.assertEqual(braf_v600e.tumor_type_summary, "")
-        self.assertTrue(braf_v600e.variant_exist)
-        self.assertFalse(braf_v600e.vus)
-
-    def test_annotate_ar_d891v(self):
-        """Test annotate method with AR D891V."""
-        cpra = Cpra(chrom="chrX", pos=66943592, ref="A", alt="T")
-        ar_d891v = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(ar_d891v, IndicatorQueryResp))
 
     def test_annotate_met_splice_donor_site_c3028_plus1_del(self):
         """Test annotate method with MET c.3028+1del."""
