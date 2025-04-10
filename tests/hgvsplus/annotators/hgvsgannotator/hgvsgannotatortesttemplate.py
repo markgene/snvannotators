@@ -52,6 +52,8 @@ class HgvsGAnnotatorTestTemplate:
             )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(str(hgvs_tp_annotation.hgvs_t), self.hgvs_t_formmated)
+                return
+        raise ValueError(f"transcript {self.tx_ac} is not found")
 
     def test_hgvs_annotation_hgvs_p(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
@@ -61,3 +63,5 @@ class HgvsGAnnotatorTestTemplate:
             )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
                 self.assertEqual(str(hgvs_tp_annotation.hgvs_p), self.hgvs_p_formatted)
+                return
+        raise ValueError(f"transcript {self.tx_ac} is not found")
