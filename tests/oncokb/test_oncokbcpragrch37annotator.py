@@ -25,29 +25,7 @@ class OncokbCpraGrch37AnnotatorTestCase(unittest.TestCase):
             oncokb_api=oncokb_api
         )
 
-    def test_annotate_met_splice_donor_site_x1010(self):
-        """OncoKB X1010_splice.
-
-        OncoKB website annotate MET X1010_splice as likely oncogenic. However, the API annotate the genomic
-        change as unknown, although the alteration is X1010_splice. Thus, the generic interpretation
-        becomes to be determined from our annotator.
-
-        Update (2024/02/16): it gives the right interpretation this time.
-
-        Update (2024/04/22): it gives unknown again (data version v4.15).
-        
-        Update (2024/05/02): it gives the right interpretation this time.
-        """
-        cpra = Cpra("chr7", 116412044, "G", "T")
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
-        self.assertTrue(isinstance(indicator_query_resp, IndicatorQueryResp))
-        self.assertIsNotNone(indicator_query_resp.query)
-        self.assertEqual(indicator_query_resp.query.alteration, "X1010_splice")
-        self.assertIsNotNone(indicator_query_resp.oncogenic)
-        self.assertEqual(indicator_query_resp.oncogenic, "Likely Oncogenic")
-        # self.assertEqual(indicator_query_resp.oncogenic, "Unknown")
-
-    def test_annotate_met_splice_donor_site_x1009(self):
+    def test_met_splice_donor_site_x1009(self):
         """OncoKB X1009_splice."""
         cpra = Cpra("chr7", 116412037, "CCAGAAGGTATATTT", "C")
         indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(cpra=cpra)
