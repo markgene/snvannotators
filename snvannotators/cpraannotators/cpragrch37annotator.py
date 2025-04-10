@@ -32,12 +32,6 @@ sequence_variant_g_creator = SequenceVariantGCreator()
 
 
 class CpraGrch37Annotator:
-    instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if cls.instance is None:
-            cls.instance = super().__new__(cls)
-        return cls.instance
 
     def __init__(
         self,
