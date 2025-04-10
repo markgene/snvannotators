@@ -297,6 +297,17 @@
             ],
         },
         {
+            "name": "tests.oncokb.oncokbcpraannotator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-v",
+                "tests.oncokb.oncokbcpraannotator"
+            ],
+        },
+        {
             "name": "tests.snvannotation",
             "type": "debugpy",
             "request": "launch",
