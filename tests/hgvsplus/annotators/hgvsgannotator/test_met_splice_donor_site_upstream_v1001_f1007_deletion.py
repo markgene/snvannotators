@@ -10,13 +10,15 @@ from snvannotators.hgvsplus.models import HgvsG
 from .hgvsgannotatortesttemplate import HgvsGAnnotatorTestTemplate
 
 
-class HgvsGAnnotatorTp53c754delTestCase(HgvsGAnnotatorTestTemplate, unittest.TestCase):
-    """Test HgvsGAnnotator class with TP53 c.754del."""
+class HgvsGAnnotatorMetSpliceDonorSiteUpstreamV1001F1007DelTestCase(
+    HgvsGAnnotatorTestTemplate, unittest.TestCase
+):
+    """Test HgvsGAnnotator class with in-frame deletion affecting the splice sites flanking MET exon 14 result."""
 
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        sequence_variant_g = parse("NC_000017.10:g.7577527delG")
+        sequence_variant_g = parse("NC_000007.13:g.116412016delGTAGACTACCGAGCTACTTTT")
         hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g)
         alt_aln_method = "splign"
         tss_upstream_limit = 20000
