@@ -90,8 +90,9 @@ class HgvsT(SequenceVariant):
             if "coordinate is out of bounds" in str(err):
                 if self.soft_validation:
                     logger.warning(
-                        "%s. The error is usually seen for promoter variant, e.g. c.-124",
+                        "%s. The error is usually seen for promoter variant, e.g. c.-124. %s",
                         sequence_variant_t,
+                        str(err)
                     )
                     is_valid = True
                 else:
@@ -112,8 +113,9 @@ class HgvsT(SequenceVariant):
             if "Cannot validate sequence of an intronic variant" in str(err):
                 if self.soft_validation:
                     logger.warning(
-                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A",
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A. %s",
                         sequence_variant_t,
+                        str(err)
                     )
                     is_valid = True
                 else:
@@ -126,8 +128,9 @@ class HgvsT(SequenceVariant):
             elif "Interval length with intronic offsets is ill-defined" in str(err):
                 if self.soft_validation:
                     logger.warning(
-                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A",
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A. %s",
                         sequence_variant_t,
+                        str(err)
                     )
                     is_valid = True
                 else:
