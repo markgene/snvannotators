@@ -70,12 +70,12 @@ class HgvsC(SequenceVariant):
 
     def is_valid(self) -> bool:
         """Validate.
-        
+
         The errors omitted and return as valid are:
-        
-        1. `HGVSInvalidIntervalError` with "coordinate is out of bounds". They are ususally promoter 
+
+        1. `HGVSInvalidIntervalError` with "coordinate is out of bounds". They are ususally promoter
             variants.
-        2. `HGVSInvalidVariantError` with "Cannot validate sequence of an intronic variant". They 
+        2. `HGVSInvalidVariantError` with "Cannot validate sequence of an intronic variant". They
             are usually intronic variants.
 
         :return: True if valid. Otherwise, False.
@@ -88,23 +88,62 @@ class HgvsC(SequenceVariant):
             if "coordinate is out of bounds" in str(err):
                 if self.soft_validation:
                     logger.warning(
-                        "%s. The error is usually seen for promoter variant, e.g. c.-124"
+                        "%s. The error is usually seen for promoter variant, e.g. c.-124. %s",
+                        sequence_variant_c,
+                        str(err),
                     )
                     is_valid = True
                 else:
+                    logger.warning(
+                        "Unexpected HGVSInvalidIntervalError of %s: %s",
+                        sequence_variant_c,
+                        err,
+                    )
                     raise
             else:
+                logger.warning(
+                    "Unexpected HGVSInvalidIntervalError of %s: %s",
+                    sequence_variant_c,
+                    err,
+                )
                 raise
         except HGVSInvalidVariantError as err:
             if "Cannot validate sequence of an intronic variant" in str(err):
                 if self.soft_validation:
                     logger.warning(
-                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A"
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A. %s",
+                        sequence_variant_c,
+                        str(err),
                     )
                     is_valid = True
                 else:
+                    logger.warning(
+                        "Unexpected HGVSInvalidVariantError of %s: %s",
+                        sequence_variant_c,
+                        err,
+                    )
+                    raise
+            elif "Interval length with intronic offsets is ill-defined" in str(err):
+                if self.soft_validation:
+                    logger.warning(
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A. %s",
+                        sequence_variant_c,
+                        str(err),
+                    )
+                    is_valid = True
+                else:
+                    logger.warning(
+                        "Unexpected HGVSInvalidIntervalError of %s: %s",
+                        sequence_variant_c,
+                        err,
+                    )
                     raise
             else:
+                logger.warning(
+                    "Unexpected HGVSInvalidVariantError of %s: %s",
+                    sequence_variant_c,
+                    err,
+                )
                 raise
         return is_valid
 
