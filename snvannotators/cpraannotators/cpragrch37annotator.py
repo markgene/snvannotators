@@ -80,6 +80,7 @@ class CpraGrch37Annotator:
         self.transcript_feature_range_annotations: (
             List[TranscriptFeatureRangeAnnotation] | None
         ) = None
+        self.meta: Dict | None = None
 
     def annotate(self) -> SnvAnnotation:
         cspra = self.get_cspra()
@@ -103,6 +104,10 @@ class CpraGrch37Annotator:
     def get_indicator_query_resp(self) -> IndicatorQueryResp:
         """Get indicator query response from OncoKB."""
         if self.indicator_query_resp is None:
+            if self.verbose:
+                logger.debug(
+                    f"Querying OncoKB for alteration {self.cpra.to_oncokb_alteration_str()}"
+                )
             self.indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(
                 cpra=self.cpra
             )
@@ -110,6 +115,10 @@ class CpraGrch37Annotator:
 
     def get_myvariant_annotation(self) -> MyvariantAnnotation:
         if self.myvariant_annotation is None:
+            if self.verbose:
+                logger.debug(
+                    f"Annotating MyVariant for alteration {self.cpra.to_myvariant_alteration_str()}"
+                )
             self.myvariant_annotation = self.myvariant_cpra_annotator.annotate(
                 cpra=self.cpra
             )
@@ -117,6 +126,8 @@ class CpraGrch37Annotator:
 
     def get_hgvs_annotation(self) -> HgvsAnnotation:
         if self.hgvs_annotation is None:
+            if self.verbose:
+                logger.debug(f"Annotating HGVS for alteration {self.cpra}")
             cspra = self.get_cspra()
             sequence_variant_g = sequence_variant_g_creator.create_from_spra(spra=cspra)
             hgvs_g = HgvsG.from_sequence_variant_g(
@@ -149,9 +160,17 @@ class CpraGrch37Annotator:
         self, hgvs_annotation: HgvsAnnotation
     ) -> List[TranscriptFeatureRangeAnnotation]:
         """Annotate transcript features for each transcript in hgvs_annotation."""
+        if self.verbose:
+            logger.debug("Annotating transcript features for genomic range")
+
         genomic_range_1_based = self.get_genomic_range_1_based()
         transcript_feature_range_annotations = []
         for hgvs_tp_annotation in hgvs_annotation.hgvs_tp_annotations:
+            if self.verbose:
+                logger.debug(
+                    f"Creating transcript features for transcript "
+                    f"{hgvs_tp_annotation.tx_ac}"
+                )
             try:
                 transcript_features_creator = TranscriptFeaturesCreator(
                     tx_ac=hgvs_tp_annotation.tx_ac,
@@ -180,13 +199,24 @@ class CpraGrch37Annotator:
                     raise e
 
             if transcript_features is None:
+                if self.verbose:
+                    logger.debug(
+                        f"Skipping annotation for transcript "
+                        f"{hgvs_tp_annotation.tx_ac} due to missing transcript features"
+                    )
                 continue
 
+            if self.verbose:
+                logger.debug(
+                    f"Annotating genomic range {genomic_range_1_based} with "
+                    f"transcript features of transcript {hgvs_tp_annotation.tx_ac}"
+                )
             range_annotation = GenomicRange1BasedTranscriptFeatureAnnotator(
                 genomic_range_1_based=genomic_range_1_based,
                 transcript_features=transcript_features,
             ).annotate()
             transcript_feature_range_annotations.append(range_annotation)
+
         self.transcript_feature_range_annotations = transcript_feature_range_annotations
         return self.transcript_feature_range_annotations
 
@@ -204,12 +234,13 @@ class CpraGrch37Annotator:
         return self.cspra
 
     def get_meta(self) -> Dict:
-        meta = {
-            "cpra": self.cpra,
-            "cspra": self.get_cspra(),
-            "alt_aln_method": self.alt_aln_method,
-            "tss_upstream_limit": self.tss_upstream_limit,
-            "uncertain": self.uncertain,
-            "promoter_tss_upstream_offset": self.promoter_tss_upstream_offset,
-        }
-        return meta
+        if self.meta is None:
+            self.meta = {
+                "cpra": self.cpra,
+                "cspra": self.get_cspra(),
+                "alt_aln_method": self.alt_aln_method,
+                "tss_upstream_limit": self.tss_upstream_limit,
+                "uncertain": self.uncertain,
+                "promoter_tss_upstream_offset": self.promoter_tss_upstream_offset,
+            }
+        return self.meta
