@@ -32,4 +32,4 @@ class HgvsGAnnotatorChr7_148508809_GATGCT_G_TestCase(HgvsGAnnotatorTestTemplate,
         cls.hgvs_g_normalized_formatted = "NC_000007.13:g.148508811_148508815del"
         cls.tx_ac = "NM_004456.4"
         cls.hgvs_t_formmated = "NM_004456.4(EZH2):c.1852-3_1853del"
-        cls.hgvs_p_formatted = "NP_004447.2:p.?"
+        cls.hgvs_p_formatted = "NP_004447.2(EZH2):p.?"
