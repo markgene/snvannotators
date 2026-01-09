@@ -38,14 +38,20 @@ class CpraGrch37AnnotatorChr7_139086935_T_C_TestCase(unittest.TestCase):
         cls.transcript_feature_range_annotations = (
             snv_annotation.transcript_feature_range_annotations
         )
+        cls.snv_annotation = snv_annotation
         cls.tx_ac = "NM_001291841.1"
+
+    def test_snv_annotation_get_gene_symbol(self):
+        self.assertEqual(self.snv_annotation.get_gene_symbol(), "LUC7L2")
 
     def test_hgvs_annotation(self):
         self.assertTrue(isinstance(self.hgvs_annotation, HgvsAnnotation))
 
     def test_hgvs_annotation_hgvs_g(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g, HgvsG))
-        self.assertEqual(str(self.hgvs_annotation.hgvs_g), "NC_000007.13:g.139086935T>C")
+        self.assertEqual(
+            str(self.hgvs_annotation.hgvs_g), "NC_000007.13:g.139086935T>C"
+        )
 
     def test_hgvs_annotation_hgvs_g_normalized(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g_normalized, HgvsG))
@@ -81,7 +87,10 @@ class CpraGrch37AnnotatorChr7_139086935_T_C_TestCase(unittest.TestCase):
         for (
             transcript_feature_range_annotation
         ) in self.transcript_feature_range_annotations:
-            if transcript_feature_range_annotation.transcript_features.tx_ac == self.tx_ac:
+            if (
+                transcript_feature_range_annotation.transcript_features.tx_ac
+                == self.tx_ac
+            ):
                 self.assertEqual(transcript_feature_range_annotation.format(), "exon 8")
 
     def test_allele_exist(self):
@@ -98,7 +107,7 @@ class CpraGrch37AnnotatorChr7_139086935_T_C_TestCase(unittest.TestCase):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
         if isinstance(self.indicator_query_resp, IndicatorQueryResp):
             # self.assertEqual(self.indicator_query_resp.query.entrez_gene_id, 10320)
-            self.assertIsNone(self.indicator_query_resp.query.entrez_variant_id)
+            self.assertIsNone(self.indicator_query_resp.query.entrez_gene_id)
 
     def test_gene_exist(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
