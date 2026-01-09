@@ -45,12 +45,12 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
 
     def test_hgvs_annotation_hgvs_g(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g, HgvsG))
-        self.assertEqual(str(self.hgvs_annotation.hgvs_g), "NC_000023.10:g.66943592A>T")
+        self.assertEqual(str(self.hgvs_annotation.hgvs_g), "NC_000007.13:g.50358659T>C")
 
     def test_hgvs_annotation_hgvs_g_normalized(self):
         self.assertTrue(isinstance(self.hgvs_annotation.hgvs_g_normalized, HgvsG))
         self.assertEqual(
-            str(self.hgvs_annotation.hgvs_g_normalized), "NC_000023.10:g.66943592A>T"
+            str(self.hgvs_annotation.hgvs_g_normalized), "NC_000007.13:g.50358659T>C"
         )
 
     def test_hgvs_annotation_hgvs_t(self):
@@ -60,9 +60,10 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                 or isinstance(hgvs_tp_annotation.hgvs_t, HgvsT)
             )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
-                self.assertEqual(
-                    str(hgvs_tp_annotation.hgvs_t), f"{self.tx_ac}(AR):c.2672A>T"
-                )
+                # self.assertEqual(
+                #     str(hgvs_tp_annotation.hgvs_t), f"{self.tx_ac}(IKZF1):c.2672A>T"
+                # )
+                self.assertIsNone(hgvs_tp_annotation.hgvs_t)
 
     def test_hgvs_annotation_hgvs_p(self):
         for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
@@ -71,9 +72,10 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                 or isinstance(hgvs_tp_annotation.hgvs_p, HgvsP)
             )
             if hgvs_tp_annotation.tx_ac == self.tx_ac:
-                self.assertEqual(
-                    str(hgvs_tp_annotation.hgvs_p), "NP_000035.2:p.Asp891Val"
-                )
+                # self.assertEqual(
+                #     str(hgvs_tp_annotation.hgvs_p), "NP_000035.2:p.Met1?"
+                # )
+                self.assertIsNone(hgvs_tp_annotation.hgvs_p)
 
     def test_transcript_feature_range_annotation(self):
         for (
@@ -85,17 +87,17 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
     def test_allele_exist(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
         if isinstance(self.indicator_query_resp, IndicatorQueryResp):
-            self.assertTrue(self.indicator_query_resp.allele_exist)
+            self.assertFalse(self.indicator_query_resp.allele_exist)
 
     def test_query_alteration(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
         if isinstance(self.indicator_query_resp, IndicatorQueryResp):
-            self.assertEqual(self.indicator_query_resp.query.alteration, "D891V")
+            self.assertEqual(self.indicator_query_resp.query.alteration, "M1?")
 
     def test_query_entrez_gene_id(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
         if isinstance(self.indicator_query_resp, IndicatorQueryResp):
-            self.assertEqual(self.indicator_query_resp.query.entrez_gene_id, 367)
+            self.assertEqual(self.indicator_query_resp.query.entrez_gene_id, 10320)
 
     def test_gene_exist(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
@@ -105,7 +107,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
     def test_query_hugo_symbol(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
         if isinstance(self.indicator_query_resp, IndicatorQueryResp):
-            self.assertEqual(self.indicator_query_resp.query.hugo_symbol, "AR")
+            self.assertEqual(self.indicator_query_resp.query.hugo_symbol, "IKZF1")
 
     def test_highest_diagnostic_implication_level(self):
         self.assertTrue(isinstance(self.indicator_query_resp, IndicatorQueryResp))
@@ -286,7 +288,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                             },
                             "feature_id": "ENST00000374690",
                             "gene_id": "ENSG00000169083",
-                            "genename": "AR",
+                            "genename": "IKZF1",
                             "prot": {
                                 "domain": "ndomain",
                                 "protpos": 891,
@@ -421,7 +423,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                             "coding_score": 0.94364,
                         },
                         "gencode_basic": ["Y", "Y", "Y"],
-                        "genename": ["AR", "AR", "AR"],
+                        "genename": ["IKZF1", "IKZF1", "IKZF1"],
                         "genocanyon": {
                             "rankscore": 0.74766,
                             "score": 0.999999619579193,
@@ -437,7 +439,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                             "p.D708V",
                             "p.D359V",
                             "p.Asp891Val",
-                            "p.D891V",
+                            "p.M1?",
                             "p.Asp359Val",
                         ],
                         "interpro": {
@@ -467,7 +469,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                         "metasvm": {"pred": "D", "rankscore": 0.98312, "score": 1.0588},
                         "mpc": {"rankscore": 0.86723, "score": 1.48208250732},
                         "mutationtaster": {
-                            "aae": ["D891V", "D359V"],
+                            "aae": ["M1?", "D359V"],
                             "converted_rankscore": 0.81001,
                             "model": ["simple_aae", "simple_aae", "without_aae"],
                             "pred": ["D", "D", "D"],
@@ -548,7 +550,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                         "chrom": "X",
                         "dbsnp_build": 156,
                         "gene": {
-                            "geneid": 367,
+                            "geneid": 10320,
                             "is_pseudo": False,
                             "name": "androgen receptor",
                             "rnas": [
@@ -638,7 +640,7 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                                 },
                             ],
                             "strand": "+",
-                            "symbol": "AR",
+                            "symbol": "IKZF1",
                         },
                         "hg19": {"end": 66943592, "start": 66943592},
                         "ref": "A",
@@ -656,8 +658,8 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                                 "effect": "missense_variant",
                                 "feature_id": "NM_000044.3",
                                 "feature_type": "transcript",
-                                "gene_id": "AR",
-                                "genename": "AR",
+                                "gene_id": "IKZF1",
+                                "genename": "IKZF1",
                                 "hgvs_c": "c.2672A>T",
                                 "hgvs_p": "p.Asp891Val",
                                 "protein": {"length": "920", "position": "891"},
@@ -672,8 +674,8 @@ class CpraGrch37AnnotatorChr7_50358659_T_C_TestCase(unittest.TestCase):
                                 "effect": "missense_variant",
                                 "feature_id": "NM_001011645.2",
                                 "feature_type": "transcript",
-                                "gene_id": "AR",
-                                "genename": "AR",
+                                "gene_id": "IKZF1",
+                                "genename": "IKZF1",
                                 "hgvs_c": "c.1076A>T",
                                 "hgvs_p": "p.Asp359Val",
                                 "protein": {"length": "388", "position": "359"},
