@@ -166,7 +166,7 @@ class CpraGrch37Annotator:
                         f"Data not available for transcript "
                         f"{hgvs_tp_annotation.tx_ac}: {e}"
                     )
-                    transcript_features = []
+                    transcript_features = None
                 else:
                     raise e
             except Exception as e:
@@ -175,9 +175,12 @@ class CpraGrch37Annotator:
                         f"Error creating transcript features for transcript "
                         f"{hgvs_tp_annotation.tx_ac}: {e}"
                     )
-                    transcript_features = []
+                    transcript_features = None
                 else:
                     raise e
+
+            if transcript_features is None:
+                continue
 
             range_annotation = GenomicRange1BasedTranscriptFeatureAnnotator(
                 genomic_range_1_based=genomic_range_1_based,
