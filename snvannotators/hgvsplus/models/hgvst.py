@@ -34,6 +34,9 @@ class HgvsT(SequenceVariant):
         assert self.type in ["c", "n"]
         self.is_valid()
 
+        # internal use only
+        self.valid: bool | None = None
+
     @classmethod
     def from_sequence_variant_t(
         cls, sequence_variant_t: SequenceVariant, soft_validation: bool = True
@@ -53,6 +56,19 @@ class HgvsT(SequenceVariant):
             ac=self.ac, type=self.type, posedit=self.posedit, gene=self.gene
         )
         return sequence_variant_t
+
+    def get_valid(self) -> bool:
+        """Get valid.
+
+        :return: True if valid. Otherwise, False. None if not validated yet.
+        :rtype: bool | None
+        """
+        if self.valid is None:
+            try:
+                self.valid = self.is_valid()
+            except Exception:
+                self.valid = False
+        return self.valid
 
     def is_valid(self) -> bool:
         """Validate.
@@ -85,20 +101,6 @@ class HgvsT(SequenceVariant):
                         err,
                     )
                     raise
-            elif "Interval length with intronic offsets is ill-defined" in str(err):
-                if self.soft_validation:
-                    logger.warning(
-                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A",
-                        sequence_variant_t,
-                    )
-                    is_valid = True
-                else:
-                    logger.warning(
-                        "Unexpected HGVSInvalidIntervalError of %s: %s",
-                        sequence_variant_t,
-                        err,
-                    )
-                    raise
             else:
                 logger.warning(
                     "Unexpected HGVSInvalidIntervalError of %s: %s",
@@ -117,6 +119,20 @@ class HgvsT(SequenceVariant):
                 else:
                     logger.warning(
                         "Unexpected HGVSInvalidVariantError of %s: %s",
+                        sequence_variant_t,
+                        err,
+                    )
+                    raise
+            elif "Interval length with intronic offsets is ill-defined" in str(err):
+                if self.soft_validation:
+                    logger.warning(
+                        "%s. The error is usually seen for intronic variant, e.g. NM_000245.4(MET):c.3028+1G>A",
+                        sequence_variant_t,
+                    )
+                    is_valid = True
+                else:
+                    logger.warning(
+                        "Unexpected HGVSInvalidIntervalError of %s: %s",
                         sequence_variant_t,
                         err,
                     )
@@ -155,7 +171,13 @@ class HgvsT(SequenceVariant):
         return self.posedit.edit.type == self.EDIT_TYPE_LOOKUP["deletion-insertion"]
 
     def is_coding(self) -> bool:
+        valid = self.get_valid()
+        if not valid:
+            return False
         return self.type == "c"
 
     def is_noncoding(self) -> bool:
+        valid = self.get_valid()
+        if not valid:
+            return False
         return self.type == "n"
