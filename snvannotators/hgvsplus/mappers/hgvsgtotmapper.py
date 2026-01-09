@@ -1,14 +1,17 @@
 """Convert HgvsG to HgvsT."""
 
 import copy
+import logging
 
-from hgvs.exceptions import HGVSInvalidIntervalError
+from hgvs.exceptions import HGVSDataNotAvailableError, HGVSInvalidIntervalError
 from hgvs.easy import am37, hdp
 from hgvs.location import BaseOffsetInterval, BaseOffsetPosition, Datum
 from hgvs.posedit import PosEdit
 from hgvs.sequencevariant import SequenceVariant
 
 from snvannotators.hgvsplus.models import HgvsG, HgvsT
+
+logger = logging.getLogger(__name__)
 
 
 class HgvsGToTMapper:
@@ -20,13 +23,17 @@ class HgvsGToTMapper:
         tx_ac: str,
         alt_aln_method: str = "splign",
         tss_upstream_limit: int = 20000,
+        error_ok: bool = False,
+        verbose: bool = False,
     ):
         self.hgvs_g = hgvs_g
         self.tx_ac = tx_ac
         self.alt_aln_method = alt_aln_method
         self.tss_upstream_limit = tss_upstream_limit
+        self.error_ok = error_ok
+        self.verbose = verbose
 
-    def map(self) -> HgvsT:
+    def map(self) -> HgvsT | None:
         hgvs_g = self.hgvs_g
         tx_ac = self.tx_ac
         alt_aln_method = self.alt_aln_method
@@ -43,9 +50,22 @@ class HgvsGToTMapper:
             ):
                 sequence_variant_t = self.convert_within_promoter_region()
             else:
-                raise ValueError(
-                    f"{hgvs_g} does not locate within promoter region"
-                ) from err
+                if self.error_ok:
+                    logger.error(
+                        f"{hgvs_g} does not locate within transcript {tx_ac} "
+                        "and is not within promoter region; returning None"
+                    )
+                    return None
+                else:
+                    raise ValueError(
+                        f"{hgvs_g} does not locate within promoter region"
+                    ) from err
+        except HGVSDataNotAvailableError as err:
+            if self.error_ok:
+                logger.error(f"Data not available for {hgvs_g}; returning None")
+                return None
+            else:
+                raise err
         if sequence_variant_t.gene is None:
             gene = self.get_gene()
             sequence_variant_t.gene = gene
