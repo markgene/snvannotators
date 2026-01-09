@@ -29,10 +29,21 @@ class HgvsCToPMapper:
     posedit field of AARefAlt class, where a PosEdit class is expected.
     """
 
-    def __init__(self, hgvs_c: HgvsC, assembly_mapper: AssemblyMapper = am37):
+    def __init__(
+        self,
+        hgvs_c: HgvsC,
+        assembly_mapper: AssemblyMapper = am37,
+        error_ok: bool = False,
+        verbose: bool = False,
+    ):
         self.hgvs_c = hgvs_c
         self.assembly_mapper = assembly_mapper
+        self.error_ok = error_ok
+        self.verbose = verbose
         self.__post_init__()
+
+        # internal use only
+        self.hgvs_p: HgvsP | None = None
 
     def __post_init__(self):
         if not isinstance(self.hgvs_c, HgvsC):
@@ -52,26 +63,51 @@ class HgvsCToPMapper:
         try:
             sequence_variant_p = self.get_sequence_variant_p()
         except HGVSInvalidIntervalError:
-            hgvs_p = HgvsPUnknownPosEditTranscriptAccessionCreator(
+            self.hgvs_p = HgvsPUnknownPosEditTranscriptAccessionCreator(
                 self.hgvs_c.ac
             ).create()
-            return hgvs_p
         else:
-            hgvs_p = HgvsP.from_sequence_variant_p(sequence_variant_p)
-            if not isinstance(hgvs_p.posedit, PosEdit):
+            self.hgvs_p = HgvsP.from_sequence_variant_p(sequence_variant_p)
+            if not isinstance(self.hgvs_p.posedit, PosEdit):
                 logger.warning(
                     "posedit field is not a PosEdit object: %s. Trying to map.",
-                    repr(hgvs_p.posedit),
+                    repr(self.hgvs_p.posedit),
                 )
                 hgvs_p_fixed = self.fix(sequence_variant_p=sequence_variant_p)
                 if hgvs_p_fixed.posedit is not None and not isinstance(
                     hgvs_p_fixed.posedit, PosEdit
                 ):
-                    raise RuntimeError(f"fail to fix hgvs_p {hgvs_p}")
+                    raise RuntimeError(f"fail to fix hgvs_p {self.hgvs_p}")
                 else:
-                    logger.warning("fix %s to %s", repr(hgvs_p), repr(hgvs_p_fixed))
-                    return hgvs_p_fixed
-            return hgvs_p
+                    logger.warning(
+                        "fix %s to %s", repr(self.hgvs_p), repr(hgvs_p_fixed)
+                    )
+                    self.hgvs_p = hgvs_p_fixed
+        self.update_hgvs_p_gene()
+        return self.hgvs_p
+
+    def update_hgvs_p_gene(self):
+        """Update gene field of hgvs_p from hgvs_c."""
+        if self.hgvs_p is None:
+            if self.hgvs_c.gene is not None:
+                if self.verbose:
+                    logger.debug(
+                        "hgvs_p is None, setting gene field from hgvs_c: %s",
+                        self.hgvs_c.gene,
+                    )
+                    self.hgvs_p.gene = self.hgvs_c.gene
+            else:
+                logger.warning(
+                    "hgvs_p gene field not updated because hgvs_c gene field is None"
+                )
+        else:
+            if self.hgvs_c.gene is not None:
+                if self.hgvs_p.gene != self.hgvs_c.gene:
+                    logger.warning(
+                        "updating hgvs_p gene field from %s to %s",
+                        self.hgvs_p.gene,
+                        self.hgvs_c.gene,
+                    )
 
     def get_sequence_variant_p(self) -> SequenceVariant:
         try:
