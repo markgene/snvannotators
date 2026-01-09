@@ -1,6 +1,9 @@
 """Annotate Cpra of GRCh37."""
 
+import logging
 from typing import Dict, List
+
+from hgvs.exceptions import HGVSDataNotAvailableError
 
 from pyoncokb.models.indicatorqueryresp import IndicatorQueryResp
 from pyoncokb.oncokbapi import OncokbApi
@@ -32,6 +35,7 @@ from snvannotators.snvannotation import SnvAnnotation
 
 cpra_to_cspra_converter = CpraToCspraGrch37Converter()
 sequence_variant_g_creator = SequenceVariantGCreator()
+logger = logging.getLogger(__name__)
 
 
 class CpraGrch37Annotator:
@@ -45,6 +49,7 @@ class CpraGrch37Annotator:
         uncertain: bool = False,
         promoter_tss_upstream_offset: int = 1500,
         hgvs_g_to_tp_mapper_error_ok: bool = False,
+        transcript_features_creator_error_ok: bool = True,
         error_ok: bool = True,
         verbose: bool = False,
     ):
@@ -55,6 +60,7 @@ class CpraGrch37Annotator:
         self.uncertain = uncertain
         self.promoter_tss_upstream_offset = promoter_tss_upstream_offset
         self.hgvs_g_to_tp_mapper_error_ok = hgvs_g_to_tp_mapper_error_ok
+        self.transcript_features_creator_error_ok = transcript_features_creator_error_ok
         self.error_ok = error_ok
         self.verbose = verbose
 
@@ -80,8 +86,8 @@ class CpraGrch37Annotator:
         indicator_query_resp = self.get_indicator_query_resp()
         myvariant_annotation = self.get_myvariant_annotation()
         hgvs_annotation = self.get_hgvs_annotation()
-        transcript_feature_range_annotations = self.annotate_transcript_feature(
-            hgvs_annotation=hgvs_annotation
+        transcript_feature_range_annotations = (
+            self.get_transcript_feature_range_annotations()
         )
         meta = self.get_meta()
         snv_annotation = SnvAnnotation(
@@ -128,24 +134,58 @@ class CpraGrch37Annotator:
             self.hgvs_annotation = hgvs_g_annotator.annotate()
         return self.hgvs_annotation
 
+    def get_transcript_feature_range_annotations(
+        self,
+    ) -> List[TranscriptFeatureRangeAnnotation]:
+        """Get transcript feature range annotations."""
+        if self.transcript_feature_range_annotations is None:
+            hgvs_annotation = self.get_hgvs_annotation()
+            self.transcript_feature_range_annotations = (
+                self.annotate_transcript_feature(hgvs_annotation=hgvs_annotation)
+            )
+        return self.transcript_feature_range_annotations
+
     def annotate_transcript_feature(
         self, hgvs_annotation: HgvsAnnotation
     ) -> List[TranscriptFeatureRangeAnnotation]:
+        """Annotate transcript features for each transcript in hgvs_annotation."""
         genomic_range_1_based = self.get_genomic_range_1_based()
         transcript_feature_range_annotations = []
         for hgvs_tp_annotation in hgvs_annotation.hgvs_tp_annotations:
-            transcript_features = TranscriptFeaturesCreator(
-                tx_ac=hgvs_tp_annotation.tx_ac,
-                genome_ac=genomic_range_1_based.ac,
-                alt_aln_method=self.alt_aln_method,
-                promoter_tss_upstream_offset=self.promoter_tss_upstream_offset,
-            ).create()
+            try:
+                transcript_features_creator = TranscriptFeaturesCreator(
+                    tx_ac=hgvs_tp_annotation.tx_ac,
+                    genome_ac=genomic_range_1_based.ac,
+                    alt_aln_method=self.alt_aln_method,
+                    promoter_tss_upstream_offset=self.promoter_tss_upstream_offset,
+                )
+                transcript_features = transcript_features_creator.create()
+            except HGVSDataNotAvailableError as e:
+                if self.transcript_features_creator_error_ok:
+                    logger.error(
+                        f"Data not available for transcript "
+                        f"{hgvs_tp_annotation.tx_ac}: {e}"
+                    )
+                    transcript_features = []
+                else:
+                    raise e
+            except Exception as e:
+                if self.transcript_features_creator_error_ok:
+                    logger.error(
+                        f"Error creating transcript features for transcript "
+                        f"{hgvs_tp_annotation.tx_ac}: {e}"
+                    )
+                    transcript_features = []
+                else:
+                    raise e
+
             range_annotation = GenomicRange1BasedTranscriptFeatureAnnotator(
                 genomic_range_1_based=genomic_range_1_based,
                 transcript_features=transcript_features,
             ).annotate()
             transcript_feature_range_annotations.append(range_annotation)
-        return transcript_feature_range_annotations
+        self.transcript_feature_range_annotations = transcript_feature_range_annotations
+        return self.transcript_feature_range_annotations
 
     def get_genomic_range_1_based(self) -> GenomicRange1Based:
         if self.genomic_range_1_based is None:
