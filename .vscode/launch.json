@@ -156,6 +156,28 @@
             ],
         },
         {
+            "name": "tests.hgvsplus.annotators.hgvsgannotator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.annotators.hgvsgannotator"
+            ],
+        },
+        {
+            "name": "tests.hgvsplus.annotators.hgvsgannotator.test_chr7_148508810_148508814del",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                // "-v",
+                "tests.hgvsplus.annotators.hgvsgannotator.test_chr7_148508810_148508814del"
+            ],
+        },
+        {
             "name": "tests.hgvsplus.creators",
             "type": "debugpy",
             "request": "launch",
