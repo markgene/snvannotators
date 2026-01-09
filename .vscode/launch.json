@@ -172,7 +172,7 @@
             "request": "launch",
             "module": "unittest",
             "args": [
-                "discover",
+                "test",
                 // "-v",
                 "tests.hgvsplus.annotators.hgvsgannotator.test_chr7_148508810_148508814del"
             ],
