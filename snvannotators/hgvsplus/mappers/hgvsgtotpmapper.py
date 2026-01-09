@@ -20,12 +20,16 @@ class HgvsGToTPMapper:
         alt_aln_method: str = "splign",
         tss_upstream_limit: int = 20000,
         uncertain: bool = False,
+        error_ok: bool = False,
+        verbose: bool = False,
     ):
         self.hgvs_g = hgvs_g
         self.tx_ac = tx_ac
         self.alt_aln_method = alt_aln_method
         self.tss_upstream_limit = tss_upstream_limit
         self.uncertain = uncertain
+        self.error_ok = error_ok
+        self.verbose = verbose
 
     def map(self) -> List[Union[HgvsT, HgvsP, None]]:
         if self.is_noncoding(refseq_ac=self.tx_ac):
@@ -39,9 +43,21 @@ class HgvsGToTPMapper:
             tx_ac=self.tx_ac,
             alt_aln_method=self.alt_aln_method,
             tss_upstream_limit=self.tss_upstream_limit,
+            error_ok=self.error_ok,
+            verbose=self.verbose,
         )
-        hgvs_t = hgvs_g_to_t_mapper.map()
-        if hgvs_t.is_coding():
+        try:
+            hgvs_t = hgvs_g_to_t_mapper.map()
+        except Exception as e:
+            if self.error_ok:
+                logger.error(
+                    f"Error mapping HgvsG to HgvsT {self.hgvs_g} on transcript {self.tx_ac}: {e}"
+                )
+                return [None, None]
+            else:
+                raise e
+
+        if hgvs_t is not None and hgvs_t.is_coding():
             hgvs_c = HgvsC.from_hgvs_t(hgvs_t=hgvs_t, soft_validation=True)
             hgvs_p = HgvsCToPMapper(hgvs_c=hgvs_c).map()
             if isinstance(hgvs_p, HgvsP) and hgvs_p.posedit:
