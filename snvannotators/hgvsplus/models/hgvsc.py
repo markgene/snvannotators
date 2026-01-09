@@ -138,6 +138,23 @@ class HgvsC(SequenceVariant):
                         err,
                     )
                     raise
+            elif "Interval length measured from different datums is ill-defined" in str(
+                err
+            ):
+                if self.soft_validation:
+                    logger.warning(
+                        "%s. The error is usually seen for intronic variant with offsets on both sides, e.g. NM_000245.4(MET):c.3028+1_3030-1del. %s",
+                        sequence_variant_c,
+                        str(err),
+                    )
+                    is_valid = True
+                else:
+                    logger.warning(
+                        "Unexpected HGVSInvalidIntervalError of %s: %s",
+                        sequence_variant_c,
+                        err,
+                    )
+                    raise
             else:
                 logger.warning(
                     "Unexpected HGVSInvalidVariantError of %s: %s",
