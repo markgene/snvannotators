@@ -88,14 +88,14 @@ class HgvsCToPMapper:
 
     def update_hgvs_p_gene(self):
         """Update gene field of hgvs_p from hgvs_c."""
-        if self.hgvs_p is None:
+        if self.hgvs_p.gene is None:
             if self.hgvs_c.gene is not None:
                 if self.verbose:
                     logger.debug(
                         "hgvs_p is None, setting gene field from hgvs_c: %s",
                         self.hgvs_c.gene,
                     )
-                    self.hgvs_p.gene = self.hgvs_c.gene
+                self.hgvs_p.gene = self.hgvs_c.gene
             else:
                 logger.warning(
                     "hgvs_p gene field not updated because hgvs_c gene field is None"
