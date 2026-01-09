@@ -26,9 +26,10 @@ class HgvsGAnnotatorChr7_148508809_GATGCT_G_TestCase(HgvsGAnnotatorTestTemplate,
             alt_aln_method=alt_aln_method,
             tss_upstream_limit=tss_upstream_limit,
             uncertain=uncertain,
+            verbose=True,
         ).annotate()
         cls.hgvs_g_formatted = "NC_000007.13:g.148508810_148508814del"
-        cls.hgvs_g_normalized_formatted = "NC_000007.13:g.148508810_148508814del"
-        cls.tx_ac = "NM_198253.2"
-        cls.hgvs_t_formmated = "NM_198253.2(TERT):c.-124C>T"
-        cls.hgvs_p_formatted = "NP_937983.2(TERT):p.?"
+        cls.hgvs_g_normalized_formatted = "NC_000007.13:g.148508811_148508815del"
+        cls.tx_ac = "NM_004456.4"
+        cls.hgvs_t_formmated = "NM_004456.4(EZH2):c.1852-3_1853del"
+        cls.hgvs_p_formatted = "NP_004447.2:p.?"
