@@ -77,7 +77,18 @@
                 // "-v",
                 "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_chr7_50358659_T_C"
             ],
-        },        
+        },
+        {
+            "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_chr7_139086935_T_C",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                // "discover",
+                // "-v",
+                "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_chr7_139086935_T_C"
+            ],
+        },
         {
             "name": "tests.cpraannotators.cpragrch37annotator.test_cpragrch37annotator_egfr_e746_a950del",
             "type": "debugpy",
@@ -220,7 +231,7 @@
                 // "-v",
                 "tests.hgvsplus.mappers.hgvsgtotpmapper.test_chr7_50358659_T_C"
             ],
-        },        
+        },
         {
             "name": "tests.hgvsplus.models",
             "type": "debugpy",
