@@ -2,7 +2,9 @@
 
 from typing import Dict, List
 
+from pyoncokb.models.indicatorqueryresp import IndicatorQueryResp
 from pyoncokb.oncokbapi import OncokbApi
+
 from snvmodels.converters.cpratocspragrch37converter import CpraToCspraGrch37Converter
 from snvmodels.cpra.cpra import Cpra
 from snvmodels.spra.cspra import Cspra
@@ -24,6 +26,7 @@ from snvannotators.hgvsplus.models.hgvsg import HgvsG
 from snvannotators.myvariant.annotators.myvariantcpraannotator import (
     MyvariantCpraAnnotator,
 )
+from snvannotators.myvariant.annotation import MyvariantAnnotation
 from snvannotators.oncokb.oncokbcpragrch37annotator import OncokbCpraGrch37Annotator
 from snvannotators.snvannotation import SnvAnnotation
 
@@ -41,6 +44,9 @@ class CpraGrch37Annotator:
         tss_upstream_limit: int = 20000,
         uncertain: bool = False,
         promoter_tss_upstream_offset: int = 1500,
+        hgvs_g_to_tp_mapper_error_ok: bool = False,
+        error_ok: bool = True,
+        verbose: bool = False,
     ):
         self.cpra = cpra
         self.oncokb_api = oncokb_api
@@ -48,6 +54,11 @@ class CpraGrch37Annotator:
         self.tss_upstream_limit = tss_upstream_limit
         self.uncertain = uncertain
         self.promoter_tss_upstream_offset = promoter_tss_upstream_offset
+        self.hgvs_g_to_tp_mapper_error_ok = hgvs_g_to_tp_mapper_error_ok
+        self.error_ok = error_ok
+        self.verbose = verbose
+
+        # lazy initialized attributes
         self.cspra = None
         self.genomic_range_1_based = None
         # initialize internal attributes
@@ -57,22 +68,18 @@ class CpraGrch37Annotator:
             oncokb_api=oncokb_api
         )
         self.myvariant_cpra_annotator = MyvariantCpraAnnotator()
+        self.indicator_query_resp: IndicatorQueryResp | None = None
+        self.myvariant_annotation: MyvariantAnnotation | None = None
+        self.hgvs_annotation: HgvsAnnotation | None = None
+        self.transcript_feature_range_annotations: (
+            List[TranscriptFeatureRangeAnnotation] | None
+        ) = None
 
     def annotate(self) -> SnvAnnotation:
         cspra = self.get_cspra()
-        indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(
-            cpra=self.cpra
-        )
-        myvariant_annotation = self.myvariant_cpra_annotator.annotate(cpra=self.cpra)
-        sequence_variant_g = sequence_variant_g_creator.create_from_spra(spra=cspra)
-        hgvs_g = HgvsG.from_sequence_variant_g(sequence_variant_g=sequence_variant_g)
-        hgvs_g_annotator = HgvsGAnnotator(
-            hgvs_g=hgvs_g,
-            alt_aln_method=self.alt_aln_method,
-            tss_upstream_limit=self.tss_upstream_limit,
-            uncertain=self.uncertain,
-        )
-        hgvs_annotation = hgvs_g_annotator.annotate()
+        indicator_query_resp = self.get_indicator_query_resp()
+        myvariant_annotation = self.get_myvariant_annotation()
+        hgvs_annotation = self.get_hgvs_annotation()
         transcript_feature_range_annotations = self.annotate_transcript_feature(
             hgvs_annotation=hgvs_annotation
         )
@@ -86,6 +93,40 @@ class CpraGrch37Annotator:
             meta=meta,
         )
         return snv_annotation
+
+    def get_indicator_query_resp(self) -> IndicatorQueryResp:
+        """Get indicator query response from OncoKB."""
+        if self.indicator_query_resp is None:
+            self.indicator_query_resp = self.oncokb_cpra_grch37_annotator.annotate(
+                cpra=self.cpra
+            )
+        return self.indicator_query_resp
+
+    def get_myvariant_annotation(self) -> MyvariantAnnotation:
+        if self.myvariant_annotation is None:
+            self.myvariant_annotation = self.myvariant_cpra_annotator.annotate(
+                cpra=self.cpra
+            )
+        return self.myvariant_annotation
+
+    def get_hgvs_annotation(self) -> HgvsAnnotation:
+        if self.hgvs_annotation is None:
+            cspra = self.get_cspra()
+            sequence_variant_g = sequence_variant_g_creator.create_from_spra(spra=cspra)
+            hgvs_g = HgvsG.from_sequence_variant_g(
+                sequence_variant_g=sequence_variant_g
+            )
+            hgvs_g_annotator = HgvsGAnnotator(
+                hgvs_g=hgvs_g,
+                alt_aln_method=self.alt_aln_method,
+                tss_upstream_limit=self.tss_upstream_limit,
+                uncertain=self.uncertain,
+                hgvs_g_to_tp_mapper_error_ok=self.hgvs_g_to_tp_mapper_error_ok,
+                error_ok=self.error_ok,
+                verbose=self.verbose,
+            )
+            self.hgvs_annotation = hgvs_g_annotator.annotate()
+        return self.hgvs_annotation
 
     def annotate_transcript_feature(
         self, hgvs_annotation: HgvsAnnotation
