@@ -141,9 +141,9 @@ class SnvAnnotation:
         return None
 
     def generate_gene_symbol_hgvspy(self) -> Generator[str, None, None]:
-        for coding_annotation in self.sequence_variant_g_annotation.coding_annotations:
-            if coding_annotation.sequence_variant_t is not None:
-                gene = coding_annotation.sequence_variant_t.gene
+        for hgvs_tp_annotation in self.hgvs_annotation.hgvs_tp_annotations:
+            if hgvs_tp_annotation.hgvs_t is not None:
+                gene = hgvs_tp_annotation.hgvs_t.gene
                 if gene is not None and gene:
                     yield gene
 
